@@ -6,7 +6,7 @@ def not_implement(Excepton):
     return Exception("Not implement")
     
 # Sidebar navigation
-page = st.sidebar.selectbox("Select a Page", ["Auth","Create","My Parties"])
+page = st.sidebar.selectbox("Select a Page", ["Auth","search", "Create","My Parties"])
 
 mapped = {
     "auth": auth_view,
