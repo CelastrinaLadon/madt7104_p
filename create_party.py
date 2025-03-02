@@ -39,4 +39,14 @@ def create_party_view():
             submit_button = st.form_submit_button("✅ บันทึก")
         with col2:
             cancel_button = st.form_submit_button("❌ ยกเลิก")
-    
+
+        if submit_button:
+            party_data = {
+                "party_name": party_name,
+                "activity_type": activity_type,
+                "location": location,
+                "date": date.strftime("%Y-%m-%d"),
+                "time": time.strftime("%H:%M"),
+                "participant": participant
+            }
+            save_party_to_json(party_data)
