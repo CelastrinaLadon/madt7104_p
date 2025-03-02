@@ -27,13 +27,13 @@ def login(username):
     st.session_state["username"] = username
 
 # Logout logic
-def auth_view():
+def logout():
     cookies["username"] = None
     st.session_state["logged_in"] = False
     st.session_state["username"] = None
 
 # Main function
-def main():
+def auth_view():
     st.title("Login Page with Cookies")
 
     users = load_credentials()
