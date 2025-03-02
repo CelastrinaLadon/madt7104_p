@@ -39,15 +39,4 @@ def search_party_view():
     # แสดงตาราง
     st.write(filtered_data[["Party Name", "Activity Type", "Date", "Time", "Location", "Participant", "View"]], unsafe_allow_html=True)
 
-    # ส่วนแสดงรายละเอียดเมื่อคลิก View
-    for _, row in filtered_data.iterrows():
-        st.markdown(f'<h3 id="view-{row["Party Name"].replace(" ", "-")}">🔍 {row["Party Name"]}</h3>', unsafe_allow_html=True)
-        st.write(f"**Activity Type:** {row['Activity Type']}")
-        st.write(f"**Date:** {row['Date']}")
-        st.write(f"**Time:** {row['Time']}")
-        st.write(f"**Location:** {row['Location']}")
-        st.write(f"**Participants:** {row['Participant']}")
-        st.button(f"Join {row['Party Name']}")
-
-
  
