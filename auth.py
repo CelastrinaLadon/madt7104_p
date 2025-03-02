@@ -13,8 +13,6 @@ def load_config():
         return None
 
 def auth_view():
-    st.set_page_config(layout="wide")  # Ensure full-screen mode
-
     config = load_config()
     if not config:
         return
