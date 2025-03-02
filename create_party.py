@@ -43,11 +43,12 @@ def create_party_view():
 
         if submit_button:
             party_data = {
-                "party_name": party_name,
-                "activity_type": activity_type,
-                "location": location,
-                "date": date.strftime("%Y-%m-%d"),
-                "time": time.strftime("%H:%M"),
-                "participant": participant
+                "Party Name": party_name,
+                "Activity Type": activity_type,
+                "Location": location,
+                "Date": date.strftime("%Y-%m-%d"),
+                "Time": time.strftime("%H:%M"),
+                "Participant": participant
             }
+            
             save_party_to_json(party_data)
