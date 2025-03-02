@@ -6,7 +6,7 @@ import pandas as pd
 
 def test_b_view():
     # ส่วนหัว
-    st.title("Joinzy - จอยซี่! 🎉")
+    st.title("Joinzy - จอยซี่!")
     
     # ตัวเลือกประเภทกิจกรรม
     activity_types = ["All", "Badminton", "Boardgame", "Football"]
