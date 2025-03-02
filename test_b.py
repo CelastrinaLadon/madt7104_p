@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 
 # ตั้งค่าชื่อเว็บแอป
-st.set_page_config(page_title="Joinzy - จอยซี่!", layout="wide")
+# st.set_page_config(page_title="Joinzy - จอยซี่!", layout="wide")
 
 def test_b_view():
     # ส่วนหัว
