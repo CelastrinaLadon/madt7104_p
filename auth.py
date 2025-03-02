@@ -27,7 +27,7 @@ def auth_view():
     )
 
     # Login form
-    name, authentication_status, username = authenticator.login("Login", "main")
+    name, authentication_status, username = authenticator.login("Login", location="main")  # ✅ Ensure 'location=' is used
 
     if authentication_status:
         st.success(f"Welcome {name}!")
