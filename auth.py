@@ -4,13 +4,11 @@ import streamlit_authenticator as stauth
 import yaml
 from yaml.loader import SafeLoader
 
-with open('./credentials.yaml') as file:
-    config = yaml.load(file, Loader=SafeLoader)
-    
 def load_config():
     try:
-        with open("config.yaml") as file:
-            return yaml.load(file, Loader=SafeLoader)
+        with open('./credentials.yaml') as file:
+        config = yaml.load(file, Loader=SafeLoader)
+        return config 
     except FileNotFoundError:
         st.error("Configuration file not found.")
         return None
