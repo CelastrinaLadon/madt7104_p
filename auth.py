@@ -1,56 +1,47 @@
 import streamlit as st
-import streamlit_authenticator as stauth
 import yaml
-from yaml.loader import SafeLoader
+import bcrypt
 
-# Load authentication config
-def load_config():
-    try:
-        with open("credentials.yaml") as file:
-            return yaml.load(file, Loader=SafeLoader)
-    except FileNotFoundError:
-        st.error("Configuration file not found.")
-        return None
+# Load credentials
+def load_credentials():
+    with open("credentials.yaml", "r") as file:
+        return yaml.safe_load(file)["users"]
 
+# Authenticate user
+def authenticate(username, password, users):
+    if username in users:
+        stored_hash = users[username]["password"].encode('utf-8')
+        return bcrypt.checkpw(password.encode('utf-8'), stored_hash)
+    return False
+
+# Streamlit UI
 def auth_view():
-    st.set_page_config(layout="wide")  # Ensure full-screen mode
+    st.title("Login Page")
 
-    config = load_config()
-    if not config:
-        return
+    users = load_credentials()
 
-    authenticator = stauth.Authenticate(
-        config["credentials"],
-        config["cookie"]["name"],
-        config["cookie"]["key"],
-        config["cookie"]["expiry_days"]
-    )
+    if "logged_in" not in st.session_state:
+        st.session_state["logged_in"] = False
 
-    # Debugging: Print what login() returns
-    login_result = authenticator.login(location="main")
-    st.write("Login Result:", login_result)
+    if not st.session_state["logged_in"]:
+        st.subheader("Please log in")
 
-    if login_result is None:
-        st.error("Authentication failed: login() returned None")
-        return
+        username = st.text_input("Username")
+        password = st.text_input("Password", type="password")
 
-    try:
-        name, authentication_status, username = login_result
-    except TypeError:
-        st.error("Unexpected return value from login(). Expected a tuple but got:", type(login_result))
-        return
+        if st.button("Login"):
+            if authenticate(username, password, users):
+                st.session_state["logged_in"] = True
+                st.session_state["username"] = username
+                st.success("Login successful!")
+                st.experimental_rerun()
+            else:
+                st.error("Invalid username or password.")
 
-    # Hide sidebar if not logged in
-    if authentication_status:
-        st.success(f"Welcome {name}!")
-        st.sidebar.title("Navigation")  # Show sidebar only after login
-    elif authentication_status is False:
-        st.error("Username/password is incorrect")
-    elif authentication_status is None:
-        st.warning("Please enter your credentials")
-        st.markdown(
-            """<style>
-                section[data-testid="stSidebar"] {display: none !important;}
-               </style>""",
-            unsafe_allow_html=True
-        )  # Hide sidebar when not logged in
+    else:
+        st.subheader(f"Welcome, {st.session_state['username']}!")
+        if st.button("Logout"):
+            st.session_state["logged_in"] = False
+            st.experimental_rerun()
+
+
