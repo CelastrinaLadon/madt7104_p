@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 
-def test_b_view():
+def search_party():
     # ส่วนหัว
     st.title("Joinzy - จอยซี่!")
     
