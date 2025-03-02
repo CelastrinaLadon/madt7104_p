@@ -1,11 +1,17 @@
 import streamlit as st
 import pandas as pd
 
+def parse_dt_to_str(x):
+    try:
+        return x.strftime('%Y-%m-%d')
+    except:
+        return x 
+        
 def search_party_view():
     # ส่วนหัว
     st.title("Joinzy - จอยซี่!")
     party_data = pd.read_json('party_data.json')
-    party_data['Date'] = party_data['Date'].strftime('%Y-%m-%d')
+    party_data['Date'] = party_data['Date'].map(parse_dt_to_str)
     # ข้อมูลตัวอย่างของปาร์ตี้
     # party_data = pd.DataFrame([
     #     {"Party Name": "ไปตีแบดกัน", "Activity Type": "Badminton", "Date": "02/03/2025", "Time": "18:00", "Location": "Winner Badminton", "Participant": "3/8"},
