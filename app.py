@@ -1,6 +1,6 @@
 import streamlit as st
 from auth import auth_view
-from serach_party import serach_party_view
+from search_party import search_party_view
 from create_party import create_party_view
 def not_implement(Excepton):
     return Exception("Not implement")
@@ -10,7 +10,7 @@ page = st.sidebar.selectbox("Select a Page", ["Auth","Search", "Create","My Part
 
 mapped = {
     "auth": auth_view,
-    "search": serach_party_view,
+    "search": search_party_view,
     "create": create_party_view
 }
 page_clean = page.replace(" ","").strip().lower()
