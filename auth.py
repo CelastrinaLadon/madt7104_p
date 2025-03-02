@@ -48,7 +48,8 @@ def auth_view():
         if st.button("Logout"):
             logout()
             st.success("Logged out successfully.")
-            st.experimental_rerun()
+            # st.experimental_rerun()
+            st.experimental_set_query_params(page="search")
     else:
         st.subheader("Please log in")
 
