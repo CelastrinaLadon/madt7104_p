@@ -3,9 +3,11 @@ import yaml
 import bcrypt
 from streamlit_cookies_manager import EncryptedCookieManager
 
-cookies = EncryptedCookieManager(prefix="myapp_", key="asdasdasd")  # Change key for security
+cookies = CookieManager()
 if not cookies.ready():
     st.stop()
+
+
 # Load credentials
 def load_credentials():
     with open("./credentials.yaml", "r") as file:
