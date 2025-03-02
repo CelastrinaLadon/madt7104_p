@@ -48,8 +48,8 @@ def auth_view():
         if st.button("Logout"):
             logout()
             st.success("Logged out successfully.")
-            # st.experimental_rerun()
-            st.experimental_set_query_params(page="search")
+            st.experimental_rerun()
+            
     else:
         st.subheader("Please log in")
 
@@ -60,6 +60,7 @@ def auth_view():
             if authenticate(username, password, users):
                 login(username)
                 st.success("Login successful!")
-                st.experimental_rerun()
+                # st.experimental_rerun()
+                st.experimental_set_query_params(page="search")
             else:
                 st.error("Invalid username or password.")
