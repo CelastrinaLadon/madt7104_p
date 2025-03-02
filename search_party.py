@@ -24,17 +24,17 @@ def search_party_view():
     filtered_data = party_data.copy()
     if selected_activity != "All":
         filtered_data = filtered_data[filtered_data["Activity Type"] == selected_activity]
- 
-    # กรองตามข้อความที่ค้นหา
+
+     # กรองตามข้อความที่ค้นหา (Real-time)
     if search_text:
         filtered_data = filtered_data[filtered_data["Party Name"].str.contains(search_text, case=False, na=False)]
- 
-    # เพิ่มคอลัมน์ View เป็นลิงก์ไปหน้ารายละเอียด
-    filtered_data["View"] = filtered_data["Party Name"].apply(
-        lambda name: f"[🔍 View Details]"
+
+    # เพิ่มคอลัมน์ Join เป็นปุ่ม Join
+    filtered_data["Join"] = filtered_data["Party Name"].apply(
+        lambda name: st.button(f"Join {name}")
     )
  
     # แสดงตาราง
-    st.write(filtered_data[["Party Name", "Activity Type", "Date", "Time", "Location", "Participant", "View"]], unsafe_allow_html=True)
+    st.write(filtered_data[["Party Name", "Activity Type", "Date", "Time", "Location", "Participant", "Join"]])
  
  
