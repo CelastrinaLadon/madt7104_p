@@ -1,4 +1,5 @@
 import streamlit as st
+from auth import auth_view
 
 def not_implement(Excepton):
     return Exception("Not implement")
@@ -7,9 +8,10 @@ def not_implement(Excepton):
 page = st.sidebar.selectbox("Select a Page", ["Auth","Create","My Parties"])
 
 mapped = {
-    "auth": not_implement(),
+    "auth": auth_view(),
     "search": not_implement(),
     "create": not_implement()
 }
-mapped.get(page, not_implement)()
+page_clean = page.replace(" ","").strip().lower()
+mapped.get(page_clean, not_implement)()
 
