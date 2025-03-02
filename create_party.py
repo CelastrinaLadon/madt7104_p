@@ -52,5 +52,5 @@ def create_party_view():
             }
             
             save_party_to_json(party_data)
-            st.success("Login successful!")
+            st.success("Create Party successful!")
             st.session_state.page = "search"
