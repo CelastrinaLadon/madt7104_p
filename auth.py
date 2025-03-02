@@ -25,9 +25,9 @@ def auth_view():
     )
 
     # Login form
-    # name, authentication_status, username = authenticator.login(location="main")
-    abc = authenticator.login(location="main")
-    print(abc)
+    name, authentication_status, username = authenticator.login(location="main")
+    # abc = authenticator.login(location="main")
+   
 
     # Hide sidebar if not logged in
     if authentication_status:
