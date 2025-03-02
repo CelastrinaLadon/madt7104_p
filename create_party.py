@@ -5,7 +5,7 @@ import datetime
 st.set_page_config(page_title="Create New Party", layout="centered")
 
 st.markdown("<h1 style='text-align: center;'>🎉 Create Party</h1>", unsafe_allow_html=True)
-def create_part_view():
+def create_party_view():
     # ฟอร์มป้อนข้อมูล
     with st.form("create_party_form"):
         party_name = st.text_input("Party Name", placeholder="Enter party name")
