@@ -1,9 +1,6 @@
 import streamlit as st
 import pandas as pd
 
-def myparties_view():
-    
-
 def my_parties_view():
         # ตั้งค่าหน้าเว็บ
     st.set_page_config(page_title="Activity History", layout="centered")
