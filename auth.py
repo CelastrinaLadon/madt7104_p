@@ -1,24 +1,24 @@
-
 import streamlit as st
 import streamlit_authenticator as stauth
 import yaml
 from yaml.loader import SafeLoader
 
+# Load authentication config
 def load_config():
     try:
-        with open('./credentials.yaml') as file:
-            config = yaml.load(file, Loader=SafeLoader)
-        return config 
+        with open("credentials.yaml") as file:
+            return yaml.load(file, Loader=SafeLoader)
     except FileNotFoundError:
         st.error("Configuration file not found.")
         return None
 
 def auth_view():
-    st.title("Login Page")
+    st.set_page_config(layout="wide")  # Ensure full-screen mode
 
     config = load_config()
     if not config:
         return
+
     authenticator = stauth.Authenticate(
         config["credentials"],
         config["cookie"]["name"],
@@ -27,12 +27,19 @@ def auth_view():
     )
 
     # Login form
-    name, authentication_status, username = authenticator.login("Login", location="main")
+    name, authentication_status, username = authenticator.login(location="main")
+
+    # Hide sidebar if not logged in
     if authentication_status:
         st.success(f"Welcome {name}!")
+        st.sidebar.title("Navigation")  # Show sidebar only after login
     elif authentication_status is False:
         st.error("Username/password is incorrect")
     elif authentication_status is None:
         st.warning("Please enter your credentials")
-
-    return authentication_status
+        st.markdown(
+            """<style>
+                section[data-testid="stSidebar"] {display: none !important;}
+               </style>""",
+            unsafe_allow_html=True
+        )  # Hide sidebar when not logged in
