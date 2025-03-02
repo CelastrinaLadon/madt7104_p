@@ -61,6 +61,7 @@ def auth_view():
                 login(username)
                 st.success("Login successful!")
                 # st.experimental_rerun()
-                st.query_params(page="search")
+                # st.query_params(page="search")
+                st.switch_page("pages/search")  # Ensure 'search.py' exists in the 'pages' directory
             else:
                 st.error("Invalid username or password.")
