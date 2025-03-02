@@ -13,7 +13,7 @@ mapped = {
     "auth": auth_view,
     "search": search_party_view,
     "create": create_party_view,
-    "my_parties": my_parties
+    "my_parties": my_parties_view
 }
 page_clean = page.replace(" ","").strip().lower()
 mapped.get(page_clean, not_implement)()
