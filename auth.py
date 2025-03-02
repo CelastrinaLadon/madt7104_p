@@ -4,7 +4,7 @@ import bcrypt
 
 # Load credentials
 def load_credentials():
-    with open("credentials.yaml", "r") as file:
+    with open("./credentials.yaml", "r") as file:
         return yaml.safe_load(file)["users"]
 
 # Authenticate user
