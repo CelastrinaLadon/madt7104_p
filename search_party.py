@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
  
-def test_b_view():
+def serach_party_view():
     # ส่วนหัว
     st.title("Joinzy - จอยซี่! ")
     # ข้อมูลตัวอย่างของปาร์ตี้
