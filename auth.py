@@ -7,7 +7,7 @@ from yaml.loader import SafeLoader
 def load_config():
     try:
         with open('./credentials.yaml') as file:
-        config = yaml.load(file, Loader=SafeLoader)
+            config = yaml.load(file, Loader=SafeLoader)
         return config 
     except FileNotFoundError:
         st.error("Configuration file not found.")
