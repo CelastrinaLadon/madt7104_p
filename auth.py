@@ -31,6 +31,7 @@ def logout():
     cookies["username"] = None
     st.session_state["logged_in"] = False
     st.session_state["username"] = None
+    st.session_state.page = "auth"
 
 # Main function
 def auth_view():
