@@ -1,35 +1,55 @@
 import streamlit as st
 import yaml
 import bcrypt
-from streamlit_cookies_manager import EncryptedCookieManager
+from streamlit_cookies_manager import CookieManager
 
+# Initialize Cookie Manager
 cookies = CookieManager()
 if not cookies.ready():
     st.stop()
 
-
 # Load credentials
 def load_credentials():
-    with open("./credentials.yaml", "r") as file:
+    with open("credentials.yaml", "r") as file:
         return yaml.safe_load(file)["users"]
 
 # Authenticate user
 def authenticate(username, password, users):
     if username in users:
-        stored_hash = users[username]["password"].encode('utf-8')
-        return bcrypt.checkpw(password.encode('utf-8'), stored_hash)
+        stored_hash = users[username]["password"].encode("utf-8")
+        return bcrypt.checkpw(password.encode("utf-8"), stored_hash)
     return False
 
-# Streamlit UI
+# Login logic
+def login(username):
+    cookies["username"] = username
+    st.session_state["logged_in"] = True
+    st.session_state["username"] = username
+
+# Logout logic
 def auth_view():
-    st.title("Login Page")
+    cookies["username"] = None
+    st.session_state["logged_in"] = False
+    st.session_state["username"] = None
+
+# Main function
+def main():
+    st.title("Login Page with Cookies")
 
     users = load_credentials()
 
-    if "logged_in" not in st.session_state:
-        st.session_state["logged_in"] = False
+    # Check if user is already logged in via cookies
+    if "username" in cookies and cookies["username"]:
+        st.session_state["logged_in"] = True
+        st.session_state["username"] = cookies["username"]
 
-    if not st.session_state["logged_in"]:
+    if st.session_state.get("logged_in"):
+        st.subheader(f"Welcome, {st.session_state['username']}!")
+        if st.button("Logout"):
+            logout()
+            st.success("Logged out successfully.")
+            st.experimental_rerun()
+    else:
         st.subheader("Please log in")
 
         username = st.text_input("Username")
@@ -37,17 +57,8 @@ def auth_view():
 
         if st.button("Login"):
             if authenticate(username, password, users):
-                st.session_state["logged_in"] = True
-                st.session_state["username"] = username
+                login(username)
                 st.success("Login successful!")
                 st.experimental_rerun()
             else:
                 st.error("Invalid username or password.")
-
-    else:
-        st.subheader(f"Welcome, {st.session_state['username']}!")
-        if st.button("Logout"):
-            st.session_state["logged_in"] = False
-            st.experimental_rerun()
-
-
