@@ -13,6 +13,8 @@ def load_config():
         return None
 
 def auth_view():
+    st.set_page_config(layout="wide")  # Ensure full-screen mode
+
     config = load_config()
     if not config:
         return
@@ -24,10 +26,19 @@ def auth_view():
         config["cookie"]["expiry_days"]
     )
 
-    # Login form
-    name, authentication_status, username = authenticator.login(location="main")
-    # abc = authenticator.login(location="main")
-   
+    # Debugging: Print what login() returns
+    login_result = authenticator.login(location="main")
+    st.write("Login Result:", login_result)
+
+    if login_result is None:
+        st.error("Authentication failed: login() returned None")
+        return
+
+    try:
+        name, authentication_status, username = login_result
+    except TypeError:
+        st.error("Unexpected return value from login(). Expected a tuple but got:", type(login_result))
+        return
 
     # Hide sidebar if not logged in
     if authentication_status:
