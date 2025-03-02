@@ -1,7 +1,4 @@
 import streamlit as st
-from auth import auth_page
-from main import main_page
-from search import search_page
 
 def not_implement(Excepton):
     return Exception("Not implement")
