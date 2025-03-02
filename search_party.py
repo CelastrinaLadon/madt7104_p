@@ -15,7 +15,7 @@ def search_party_view():
     selected_activity = st.selectbox("Activity Type", activity_types)
  
     # ช่องค้นหาปาร์ตี้ (Free Text)
-    search_text = st.text_input("🔍 Search Party Name", "")
+    search_text = st.text_input("🔍 Search Party Name", key="search", on_change=lambda: st.experimental_rerun())
  
     # ปุ่มสร้างปาร์ตี้
     st.button("➕ Create Party")
