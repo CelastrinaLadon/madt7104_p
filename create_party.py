@@ -45,5 +45,13 @@ def create_party_view():
         if time.hour > 12:  # จำกัดเวลาถึงแค่ 12:00 เท่านั้น
             st.error("⛔ กรุณาเลือกเวลาเฉพาะในช่วง 00:00 - 12:00 เท่านั้น!")
         else:
+            party_data = {
+                "party_name": party_name,
+                "activity_type": activity_type,
+                "location": location,
+                "date": date.strftime("%Y-%m-%d"),
+                "time": time.strftime("%H:%M"),
+                "participant": participant
+            }
             save_party_to_json(party_data)
             st.success(f"✅ Party '{party_name}' created successfully!")
