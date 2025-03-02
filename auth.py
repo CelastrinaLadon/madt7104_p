@@ -61,6 +61,6 @@ def auth_view():
                 login(username)
                 st.success("Login successful!")
                 # st.experimental_rerun()
-                st.experimental_set_query_params(page="search")
+                st.query_params(page="search")
             else:
                 st.error("Invalid username or password.")
