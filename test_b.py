@@ -31,7 +31,7 @@ def test_b_view():
  
     # เพิ่มคอลัมน์ View เป็นลิงก์ไปหน้ารายละเอียด
     filtered_data["View"] = filtered_data["Party Name"].apply(
-        lambda name: f"[🔍 View Details](#view-{name.replace(' ', '-')})"
+        lambda name: f"[🔍 View Details]"
     )
  
     # แสดงตาราง
