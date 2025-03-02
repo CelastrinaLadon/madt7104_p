@@ -4,7 +4,7 @@ import pandas as pd
 def search_party_view():
     # ส่วนหัว
     st.title("Joinzy - จอยซี่! ")
-    party_date = pd.read_json('party_data.json')
+    party_data = pd.read_json('party_data.json')
     # party_data = pd.DataFrame([
     #     {"Party Name": "ไปตีแบดกัน", "Activity Type": "Badminton", "Date": "02/03/2025", "Time": "18:00", "Location": "Winner Badminton", "Participant": "3/8"},
     #     {"Party Name": "บอร์ดเกมกัน", "Activity Type": "Boardgame", "Date": "03/03/2025", "Time": "19:00", "Location": "GameSmith", "Participant": "5/8"},
