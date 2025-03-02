@@ -31,8 +31,7 @@ def logout():
     cookies["username"] = None
     st.session_state["logged_in"] = False
     st.session_state["username"] = None
-    st.session_state.page = "auth"
-
+   
 # Main function
 def auth_view():
     st.title("Login Page with Cookies")
@@ -49,7 +48,7 @@ def auth_view():
         if st.button("Logout"):
             logout()
             st.success("Logged out successfully.")
-            st.experimental_rerun()
+            st.session_state.page = "auth"
             
     else:
         st.subheader("Please log in")
