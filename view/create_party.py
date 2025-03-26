@@ -2,9 +2,6 @@ import streamlit as st
 import datetime
 import os, json
 
-# ตั้งค่าชื่อหน้า
-st.set_page_config(page_title="Create New Party", layout="centered")
-
 def save_party_to_json(data, filename="party_data.json"):
     if os.path.exists(filename):
         with open(filename, "r") as f:

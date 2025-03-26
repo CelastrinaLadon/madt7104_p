@@ -4,3 +4,4 @@ PyJWT
 bcrypt
 python-dotenv
 streamlit-cookies-manager
+SQLAlchemy
