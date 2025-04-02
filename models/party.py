@@ -14,12 +14,14 @@ class PartyPlayer(Base):
     user_id = Column(String, ForeignKey("users.user_id"))
 
     user = relationship("User", back_populates="parties_joined")
-    
+    party = relationship("Party", back_populates="players")
 
 class Party(Base):
     __tablename__ = "parties"
 
     party_id = Column(String, primary_key=True, default=lambda: str(uuid.uuid4()))
+    party_name =Column(String)
+    description =Column(String)
     host = Column(Integer, ForeignKey("users.user_id"), nullable=False)
     location_id = Column(String, ForeignKey("locations.location_id"), nullable=False)
     activity_id = Column(String, ForeignKey("activities.activity_id"), nullable=False)

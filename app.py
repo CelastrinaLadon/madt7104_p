@@ -3,7 +3,7 @@ import streamlit as st
 from views.auth import auth_view
 from views.search_party import search_party_view
 from views.create_party import create_party_view
-from view.my_parties import my_parties_view
+from views.my_parties import my_parties_view
 from views.register import register_view
 def not_implement():
     return Exception("Not implement")

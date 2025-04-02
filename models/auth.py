@@ -15,5 +15,8 @@ class User(Base):
     phone_number = Column(String)
     banned_users = Column(MutableList.as_mutable(PickleType), default=list)
 
+    # Add this line to create the back-reference relationship
+    parties_joined = relationship("PartyPlayer", back_populates="user")
+
     def __repr__(self):
         return f"<User(username='{self.username}', email='{self.email}')>"

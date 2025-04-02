@@ -8,69 +8,91 @@ from models.activities import Activities
 from models.location import Location
 
 def create_party_view():
-    st.markdown("<h1 style='text-align: center;'>🎉 Create Party</h1>", unsafe_allow_html=True)
+    st.title("Joinzy - จอยซี่!")
+    st.subheader("➕ สร้างปาร์ตี้ใหม่")
 
-    db: Session = SessionLocal()
-
-    # Ensure user is logged in
-    username = st.session_state.get("username")
-    if not username:
-        st.warning("Please log in first.")
+    # Check if user is logged in
+    if not st.session_state.get("logged_in", False) or not st.session_state.get("username"):
+        st.error("กรุณาเข้าสู่ระบบก่อนสร้างปาร์ตี้")
+        if st.button("เข้าสู่ระบบ"):
+            st.session_state.page = "auth"
+            st.rerun()
+        return
+    
+    # Create DB session
+    db = SessionLocal()
+    
+    # Get current user using username from session
+    current_user = db.query(User).filter(User.username == st.session_state.username).first()
+    if not current_user:
+        st.error("ไม่พบข้อมูลผู้ใช้")
         db.close()
         return
-
-    user = db.query(User).filter_by(username=username).first()
-    if not user:
-        st.error("User not found.")
-        db.close()
-        return
-
-    # Load master data
-    activities = db.query(Activities).order_by(Activities.name).all()
-    locations = db.query(Location).order_by(Location.name).all()
-
-    activity_names = {a.name: a.activity_id for a in activities}
-    location_names = {l.name: l.location_id for l in locations}
-
-    # Form
+    
+    # Form for creating a new party
     with st.form("create_party_form"):
-        party_name = st.text_input("Party Name", placeholder="Enter party name")
-
-        selected_activity = st.selectbox("Activity Type", list(activity_names.keys()))
-        selected_location = st.selectbox("Location", list(location_names.keys()))
-
-        col1, col2 = st.columns(2)
-        with col1:
-            date = st.date_input("Date")
-        with col2:
-            time = st.time_input("Time", value=datetime.time(0, 0), step=900)
-
-        participant = st.number_input("Participant", min_value=1, step=1)
-
-        col1, col2 = st.columns(2)
-        with col1:
-            submit = st.form_submit_button("✅ บันทึก")
-        with col2:
-            cancel = st.form_submit_button("❌ ยกเลิก")
-
-        if submit:
-            party_datetime = datetime.datetime.combine(date, time)
-            new_party = Party(
-                host=user.user_id,
-                location_id=location_names[selected_location],
-                activity_id=activity_names[selected_activity],
-                party_time=party_datetime,
-                player=participant
-            )
-            db.add(new_party)
-            db.commit()
-            db.close()
-
-            st.success("Create Party successful!")
-            st.session_state.page = "search"
-            st.rerun()
-
-        elif cancel:
-            db.close()
-            st.session_state.page = "search"
-            st.rerun()
+        party_name = st.text_input("ชื่อปาร์ตี้")
+        
+        # Get activities and locations for dropdown
+        activities = db.query(Activities).order_by(Activities.name).all()
+        locations = db.query(Location).order_by(Location.name).all()
+        
+        activity_options = {a.name: a.activity_id for a in activities}
+        location_options = {l.name: l.location_id for l in locations}
+        
+        selected_activity = st.selectbox("ประเภทกิจกรรม", list(activity_options.keys()))
+        selected_location = st.selectbox("สถานที่", list(location_options.keys()))
+        
+        # Date and time picker
+        party_date = st.date_input("วันที่")
+        party_time = st.time_input("เวลา")
+        
+        # Player count - ensure it's more than 1
+        player_count = st.number_input("จำนวนผู้เข้าร่วมสูงสุด", min_value=2, value=2, step=1)
+        
+        # Additional party details if needed
+        description = st.text_area("รายละเอียดเพิ่มเติม", "")
+        
+        submit_button = st.form_submit_button("สร้างปาร์ตี้")
+        
+        if submit_button:
+            try:
+                # Combine date and time
+                import datetime
+                party_datetime = datetime.datetime.combine(party_date, party_time)
+                
+                # Create new party
+                new_party = Party(
+                    party_name=party_name,
+                    description=description,
+                    host=current_user.user_id,
+                    location_id=location_options[selected_location],
+                    activity_id=activity_options[selected_activity],
+                    party_time=party_datetime,
+                    player=player_count
+                )
+                
+                db.add(new_party)
+                db.flush()  # Flush to get the party_id before using it
+                
+                # Automatically add host as a player
+                new_party.add_user_to_party(current_user)
+                
+                db.commit()
+                st.success("สร้างปาร์ตี้สำเร็จ!")
+                
+                # Redirect to search page after short delay
+                import time
+                time.sleep(1)
+                st.session_state.page = "search"
+                st.rerun()
+                
+            except Exception as e:
+                db.rollback()
+                st.error(f"เกิดข้อผิดพลาด: {str(e)}")
+    
+    if st.button("กลับ"):
+        st.session_state.page = "search"
+        st.rerun()
+    
+    db.close()

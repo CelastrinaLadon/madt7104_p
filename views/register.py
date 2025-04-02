@@ -3,6 +3,7 @@ import bcrypt
 from models.db import SessionLocal
 from models.auth import User
 from utils.session import init_session_state
+from utils.session import is_login
 
 
 def register_view():
@@ -12,7 +13,13 @@ def register_view():
         st.session_state.username = None
         
     st.title("Register")
-
+    if st.session_state.get("logged_in", False) or st.session_state.get("username"):
+        st.error("กรุณาออกจากระบบ")
+        if st.button("ออกจากระบบ"):
+            st.session_state.page = "auth"
+            st.rerun()
+        return
+    
     # Initialize flag
     if "register_success" not in st.session_state:
         st.session_state.register_success = False
