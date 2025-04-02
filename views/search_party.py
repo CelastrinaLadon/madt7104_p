@@ -29,7 +29,7 @@ def search_party_view():
 
     query_params = st.query_params
     if "view" in query_params:
-        party_id = query_params["view"][0]  # Extract the 'view' param
+        party_id = query_params["view"]  # Extract the 'view' param
         party_details_view(party_id)
         return
     # Create DB session
