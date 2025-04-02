@@ -20,25 +20,31 @@ def get_user(username):
     db.close()
     return user
 
-# Login
 def login(username):
-    cookies["username"] = username
+    cookies["username"] = username  # Save to cookies
+    cookies.save()  # Save cookies first
+    
+    # Set session state
     st.session_state.logged_in = True
     st.session_state.username = username
     st.session_state.page = "search"
-    cookies.save()
     st.session_state.messages = []
+    
     st.rerun()
 
-# Logout
 def logout():
+    # Clear cookies and session state
     cookies["username"] = None
+    cookies.save()
+
+    st.session_state.clear()  # Optional: clears all keys
     st.session_state.logged_in = False
     st.session_state.username = None
     st.session_state.page = "auth"
-    cookies.save()
     st.session_state.messages = []
+
     st.rerun()
+
 
 # Main view
 def auth_view():
