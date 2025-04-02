@@ -21,12 +21,17 @@ def search_party_view():
         return
 
     # Get query parameters from the URL
-    query_params = st.experimental_get_query_params()
+    # query_params = st.experimental_get_query_params()
+    # if "view" in query_params:
+    #     party_id = query_params["view"][0]  # Extract the 'view' param
+    #     party_details_view(party_id)
+    #     return
+
+    query_params = st.query_params
     if "view" in query_params:
         party_id = query_params["view"][0]  # Extract the 'view' param
         party_details_view(party_id)
         return
-
     # Create DB session
     db = SessionLocal()
 
