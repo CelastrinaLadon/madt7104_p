@@ -27,6 +27,7 @@ def login(username):
     st.session_state.username = username
     st.session_state.page = "search"
     cookies.save()
+    st.session_state.messages = []
     st.rerun()
 
 # Logout
@@ -36,6 +37,7 @@ def logout():
     st.session_state.username = None
     st.session_state.page = "auth"
     cookies.save()
+    st.session_state.messages = []
     st.rerun()
 
 # Main view

@@ -5,6 +5,8 @@ from views.search_party import search_party_view
 from views.create_party import create_party_view
 from views.my_parties import my_parties_view
 from views.register import register_view
+from views.joinzy_assistant import joinzy_assistant_view
+
 def not_implement():
     return Exception("Not implement")
 
@@ -14,8 +16,8 @@ if "page" not in st.session_state:
 # Sidebar navigation
 menu = st.sidebar.radio(
     "Select a Page",
-    ["Auth", "Register", "Search", "Create", "My Parties"],
-    index=["auth", "register", "search", "create", "myparties"].index(st.session_state.page)
+    ["Auth", "Register","Joinzy Assistant","Search", "Create", "My Parties"],
+    index=["auth", "register", "joinzyassistant", "search", "create", "myparties"].index(st.session_state.page)
 )
 
 new_page = menu.lower().replace(" ", "")
@@ -27,6 +29,7 @@ mapped = {
     "register": register_view,
     "search": search_party_view,
     "create": create_party_view,
-    "myparties": my_parties_view
+    "myparties": my_parties_view,
+    "joinzyassistant": joinzy_assistant_view
 }
 mapped.get(st.session_state.page, not_implement)()

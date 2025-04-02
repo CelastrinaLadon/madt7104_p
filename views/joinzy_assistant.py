@@ -1,10 +1,20 @@
 import streamlit as st
-from vertex_ai import detect_intent_texts  # Import the helper function
+from ai.vertex_ai import send_to_gemini
 
-def joincy_assistant_view():
-    st.title("Joincy Assistant - จอยซี่แอสซิสแทนท์")
-    st.subheader("💬 คุยกับจอยซี่แอสซิสแทนท์เพื่อค้นหาหรือสร้างปาร์ตี้")
+def get_intent(text: str) -> str:
+    """Detect user intent from message."""
+    text = text.lower()
+    if "สร้าง" in text or "จัด" in text or "ปาร์ตี้ใหม่" in text:
+        return "create"
+    elif "ค้นหา" in text or "มีปาร์ตี้" in text or "อยากเข้าร่วม" in text:
+        return "search"
+    return "unknown"
 
+def joinzy_assistant_view():
+    st.title("Joinzy Assistant 🤖")
+    st.subheader("💬 คุยกับจอยซี่เพื่อค้นหาหรือสร้างปาร์ตี้")
+
+    # Guard if not logged in
     if not st.session_state.get("logged_in", False) or not st.session_state.get("username"):
         st.error("กรุณาเข้าสู่ระบบก่อนใช้แอสซิสแทนท์")
         if st.button("เข้าสู่ระบบ"):
@@ -12,37 +22,53 @@ def joincy_assistant_view():
             st.rerun()
         return
 
-    # Store chat history
+    # Initialize message history
     if "messages" not in st.session_state:
         st.session_state.messages = []
 
-    # Display conversation
-    for message in st.session_state.messages:
-        st.markdown(f"**{message['role']}**: {message['content']}")
+    # Show conversation
+    for msg in st.session_state.messages:
+        with st.chat_message(msg["role"].lower()):
+            st.markdown(msg["content"])
 
-    # Get user input
-    user_input = st.text_input("คุณต้องการค้นหาหรือสร้างปาร์ตี้อะไร?", "")
+    # Chat input
+    user_input = st.chat_input("คุณต้องการค้นหาหรือสร้างปาร์ตี้อะไร?")
 
     if user_input:
-        # Add the user message to the conversation history
+        # Show user message
         st.session_state.messages.append({"role": "User", "content": user_input})
+        with st.chat_message("user"):
+            st.markdown(user_input)
 
-        # Send user input to Vertex AI for processing
-        assistant_response = detect_intent_texts("your-project-id", "unique-session-id", user_input)
-        
-        # Add the assistant's response to the conversation history
+        # Detect intent
+        intent = get_intent(user_input)
+
+        # Ask Gemini
+        session_id = st.session_state.get("username", "anonymous")
+        assistant_response = send_to_gemini(session_id, user_input)
+
+        # Enhance response
+        if intent == "search":
+            assistant_response += "\n\n📍 *โปรดระบุชื่อหรือสถานที่ของปาร์ตี้ที่คุณต้องการค้นหา เช่น ‘เชียงใหม่’ หรือ ‘ปาร์ตี้บอร์ดเกม’*"
+        elif intent == "create":
+            assistant_response += "\n\n🎉 *พร้อมแล้ว ไปหน้าสร้างปาร์ตี้กันเลย!*"
+
+        # Show assistant reply
         st.session_state.messages.append({"role": "Assistant", "content": assistant_response})
+        with st.chat_message("assistant"):
+            st.markdown(assistant_response)
 
-        # Re-render the chat interface
-        st.experimental_rerun()
+        # Action buttons
+        if intent == "create":
+            if st.button("➡️ ไปหน้าสร้างปาร์ตี้"):
+                st.session_state.page = "create"
+                st.rerun()
+        elif intent == "search":
+            if st.button("🔍 ค้นหาปาร์ตี้"):
+                st.session_state.page = "search_party"
+                st.rerun()
 
-    # Optionally, provide an option to create a party or search
-    if st.session_state.get("messages", []) and "create party" in st.session_state.messages[-1]["content"].lower():
-        if st.button("สร้างปาร์ตี้ใหม่"):
-            st.session_state.page = "create"
-            st.rerun()
-
-    # Provide back navigation
-    if st.button("กลับ"):
+    # Manual back button
+    if st.button("⬅️ กลับ"):
         st.session_state.page = "search_party"
         st.rerun()

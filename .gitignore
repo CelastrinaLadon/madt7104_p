@@ -1,1 +1,3 @@
 *.pyc
+.streamlit/*
+gen-lang-client-0351263191-a3fba8bb8a30.json
