@@ -116,7 +116,7 @@ def party_details_view(party_id):
     if not party:
         st.error("ไม่พบข้อมูลปาร์ตี้")
         if st.button("กลับ"):
-            st.session_state.page = "search_party"
+            st.session_state.page = "search"
             st.rerun()
         db.close()
         return
@@ -196,7 +196,7 @@ def party_details_view(party_id):
     
     # Back button
     if st.button("กลับ"):
-        st.session_state.page = "search_party"
+        st.session_state.page = "search"
         st.rerun()
     
     db.close()
