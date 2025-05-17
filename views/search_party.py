@@ -223,10 +223,10 @@ def party_details_view(party_id):
     #     st.rerun()
     if st.button("⬅️ กลับ"):
     # redirect ไปหน้า search โดยลบ query param
-    st.markdown("""
-        <script>
-            window.location.href = window.location.pathname + "?page=search";
-        </script>
-    """, unsafe_allow_html=True)
-    st.stop()
+        st.markdown("""
+            <script>
+                window.location.href = window.location.pathname + "?page=search";
+            </script>
+        """, unsafe_allow_html=True)
+        st.stop()
     db.close()
