@@ -24,6 +24,7 @@ def search_party_view():
 
     query_params = st.query_params
     if "view" in query_params:
+        print("query_params", query_params)
         party_id = query_params["view"][0]
         party_details_view(party_id)
         return
@@ -197,6 +198,6 @@ def party_details_view(party_id):
     if st.button("⬅️ กลับ"):
     # redirect ไปหน้า search โดยลบ query param
         st.session_state.page = 'search'
-        # st.markdown("""<script>window.location.href = window.location.pathname + "?page=search";</script>""", unsafe_allow_html=True)
+        st.markdown("""<script>window.location.href = window.location.pathname + "?page=search";</script>""", unsafe_allow_html=True)
         # st.stop()
     db.close()
