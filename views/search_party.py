@@ -104,7 +104,7 @@ def search_party_view():
             lambda row: f'<a href="?view={row["party_id"]}" target="_self"><button style="background-color: #4CAF50; color: white; padding: 10px; font-size: 16px; border: none; cursor: pointer;">🔍 ดูปาร์ตี้: {row["Party Name"]}</button></a>', axis=1
         )
 
-        display_df = filtered_df[["Party Name", "Activity Type", "Date", "Time", "Location", "Participant","View Party"]]
+        display_df = filtered_df[["Party Name", "Activity Type", "Date", "Time", "Location", "Participant","price", "View Party"]]
         # Display the filtered DataFrame with the "View Party" column
         st.write(display_df.to_html(escape=False, index=False), unsafe_allow_html=True)
         
