@@ -6,12 +6,11 @@ from streamlit_cookies_manager import CookieManager
 from models.db import SessionLocal
 
 cookies = CookieManager()
+if not cookies.ready():
+    st.stop()
 
 def auth_view():
     from models.auth import User 
-    if not cookies.ready():
-        st.info("🔄 Initializing cookie system... กรุณารีเฟรชหน้าเว็บอีกครั้ง")
-        st.stop()
 
     # Init session
     if "logged_in" not in st.session_state:
