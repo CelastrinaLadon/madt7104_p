@@ -3,7 +3,7 @@ from sqlalchemy.orm import joinedload
 from models.db import SessionLocal
 from models.party import Party
 from models.activities import Activities
-from models.location import Location
+from models.location import Location, LocationActivities
 from models.auth import User
 import pandas as pd
 
