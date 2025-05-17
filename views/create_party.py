@@ -72,7 +72,7 @@ def create_party_view():
         player_count = st.number_input("จำนวนผู้เข้าร่วมสูงสุด", min_value=2, value=2, step=1)
 
         # จำนวนผู้เข้าร่วมต่ำสุด (จำกัดไม่ให้มากกว่า player_count)
-        min_participant = st.number_input("จำนวนผู้เข้าร่วมต่ำสุด", min_value=2, max_value=player_count, value=2, step=1)
+        min_participant = st.number_input("จำนวนผู้เข้าร่วมต่ำสุด", min_value=2, value=2, step=1)
 
         # ตรวจสอบและแสดงคำเตือน (ถ้าอยากแสดงเพิ่มก็ได้)
         if min_participant > player_count:
