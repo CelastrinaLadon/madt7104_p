@@ -22,3 +22,5 @@ class LocationActivities(Base):
     location_id = Column(String, ForeignKey("locations.location_id"))
     activity_id = Column(String, ForeignKey("activities.activity_id"))
     price = Column(Integer, nullable=False)
+    
+    activity = relationship("Activities", back_populates="locations")
