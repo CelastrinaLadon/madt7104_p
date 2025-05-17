@@ -48,7 +48,7 @@ def create_party_view():
         hour = st.number_input("Hour", min_value=0, max_value=23, step=1, value=0)
         minute = st.number_input("Minute", min_value=0, max_value=59, step=1, value=0)
 
-        time = datetime.datetime.time(hour=hour, minute=minute)
+        time = datetime.time(hour=hour, minute=minute)
         
         # Player count - ensure it's more than 1
         player_count = st.number_input("จำนวนผู้เข้าร่วมสูงสุด", min_value=2, value=2, step=1)
