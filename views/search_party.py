@@ -86,18 +86,6 @@ def search_party_view():
         st.session_state.page = "create"
         st.rerun()
 
-    st.subheader("รายการปาร์ตี้")
-    for idx, row in filtered_df.iterrows():
-        with st.container():
-            st.markdown(f"### 🎉 {row['Party Name']}")
-            st.markdown(f"- กิจกรรม: {row['Activity Type']}")
-            st.markdown(f"- สถานที่: {row['Location']}")
-            st.markdown(f"- เวลา: {row['Date']} {row['Time']}")
-            st.markdown(f"- ผู้เข้าร่วม: {row['Participant']}")
-            if st.button(f"🔍 ดูปาร์ตี้: {row['Party Name']}", key=f"view_{row['party_id']}"):
-                st.session_state.selected_party_id = row["party_id"]
-                st.rerun()
-
     if not filtered_df.empty:
         # Display the regular data without the party_id column
         filtered_df["View Party"] = filtered_df.apply(
