@@ -28,9 +28,7 @@ def search_party_view():
         party_details_view(party_id)
         return
 
-    # if "selected_party_id" in st.session_state:
-    # party_id = st.session_state.selected_party_id
-    # party_details_view(party_id)
+
     # return
     # Create DB session
     db = SessionLocal()
@@ -94,17 +92,6 @@ def search_party_view():
         # Display the filtered DataFrame with the "View Party" column
         st.write(display_df.to_html(escape=False, index=False), unsafe_allow_html=True)
         
-        # # Create a grid of buttons for party details
-        # st.subheader("ดูรายละเอียดปาร์ตี้")
-        # cols = st.columns(3)  # Create 3 columns layout for buttons
-        
-        # for idx, row in filtered_df.iterrows():
-        #     with cols[idx % 3]:  # Distribute buttons evenly across columns
-        #         if st.button(f"🔍 ดูปาร์ตี้: {row['Party Name']}", key=f"view_{row['party_id']}"):
-        #             # Use session state to store the party_id instead of query params
-        #             st.session_state.selected_party_id = row['party_id']
-        #             st.session_state.page = "partydetails"  # Switch to party details view
-        #             st.rerun()
     else:
         st.info("ไม่พบปาร์ตี้ที่ตรงกับคำค้นหา")
 
