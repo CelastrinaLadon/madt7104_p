@@ -46,8 +46,13 @@ def create_party_view():
         
         # Date and time picker
         party_date = st.date_input("วันที่")
-        hour = st.selectbox("ชั่วโมง (Hour)", options=list(range(0, 23)))
-        minute = st.selectbox("นาที (Minute)", options=[0, 15, 30, 45])
+        col1, col2 = st.columns(2)
+
+        with col1:
+            hour = st.selectbox("ชั่วโมง (Hour)", options=list(range(0, 24)))
+
+        with col2:
+            minute = st.selectbox("นาที (Minute)", options=[0, 15, 30, 45])
 
         time = dtTime(hour=hour, minute=minute)
         
