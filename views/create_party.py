@@ -55,7 +55,7 @@ def create_party_view():
             start_hour = st.selectbox("เวลาเริ่ม  (Hour)", options=list(range(0, 24)))
 
         with col2:
-            start_minute = st.selectbox("นาที (Minute)", options=[0, 15, 30, 45])
+            start_minute = st.selectbox("นาทีเริ่ม (Minute)", options=[0, 15, 30, 45])
 
         start_time = dtTime(hour=start_hour, minute=start_minute)
 
@@ -64,7 +64,7 @@ def create_party_view():
             end_hour = st.selectbox("เวลาจบ  (Hour)", options=list(range(0, 24)))
 
         with col4:
-            end_minute = st.selectbox("นาที (Minute)", options=[0, 15, 30, 45])
+            end_minute = st.selectbox("นาทีจบ (Minute)", options=[0, 15, 30, 45])
 
         end_time = dtTime(hour=end_hour, minute=end_minute)
 
