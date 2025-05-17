@@ -1,7 +1,11 @@
+
+import streamlit as st
+import bcrypt
+from streamlit_cookies_manager import CookieManager
+
+from models.db import SessionLocal
+
 def auth_view():
-    from streamlit_cookies_manager import CookieManager
-    import bcrypt
-    from models.db import SessionLocal
     from models.auth import User
 
     cookies = CookieManager()
