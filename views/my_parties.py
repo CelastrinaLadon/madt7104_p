@@ -4,7 +4,7 @@ from sqlalchemy.orm import joinedload
 from models.db import SessionLocal
 from models.party import Party
 from models.activities import Activities
-from models.location import Location
+from models.location import Location, LocationActivities
 from models.auth import User
 
 def my_parties_view():
@@ -39,6 +39,13 @@ def my_parties_view():
     activity_names = [a.name for a in db.query(Activities).order_by(Activities.name).all()]
     location_names = [a.name for a in db.query(Location).order_by(Location.name).all()]
 
+    price_obj = db.query(LocationActivities).filter_by(
+        location_id=p.location_id,
+        activity_id=p.activity_id
+    ).first()
+
+    price = f"{price_obj.price:,} บาท" if price_obj else "-"
+
     # Transform to displayable DataFrame
     rows = []
     for p in parties:
@@ -50,7 +57,8 @@ def my_parties_view():
             "End Time": p.party_endtime.strftime("%H:%M"),
             "Location": p.location.name if p.location else "-",
             "Participant": f"{len(p.players)}/{p.player}",
-            "party_id": p.party_id  # Store party_id to use with buttons later
+            "party_id": p.party_id,  # Store party_id to use with buttons later
+            "price": price,
         })
 
     df = pd.DataFrame(rows)

@@ -87,7 +87,7 @@ def auth_view():
                         cookies.save()
                         st.session_state.logged_in = True
                         st.session_state.username = username
-                        st.session_state.page = "search"
+                        st.session_state.page = "joinzyassistant"
                         st.success("สมัครสมาชิกสำเร็จ 🎉")
                         st.rerun()
                     db.close()

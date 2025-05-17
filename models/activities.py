@@ -10,6 +10,8 @@ class Activities(Base):
     name = Column(String, nullable=False)
     description = Column(String)
 
+   locations = relationship("LocationActivities", back_populates="activity")
+
     def __init__(self, name: str, description: str):
         self.name = name
         self.description = description
