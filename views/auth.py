@@ -1,4 +1,4 @@
-def auth_combined_view():
+def auth_view():
     from streamlit_cookies_manager import CookieManager
     import bcrypt
     from models.db import SessionLocal
