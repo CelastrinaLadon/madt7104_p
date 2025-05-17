@@ -10,6 +10,7 @@ cookies = CookieManager()
 def auth_view():
     from models.auth import User 
     if not cookies.ready():
+        st.info("🔄 Initializing cookie system... กรุณารีเฟรชหน้าเว็บอีกครั้ง")
         st.stop()
 
     # Init session
