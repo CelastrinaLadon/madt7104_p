@@ -16,8 +16,8 @@ if "page" not in st.session_state:
 # Sidebar navigation
 menu = st.sidebar.radio(
     "Select a Page",
-    ["Auth", "Register","Joinzy Assistant","Search", "Create", "My Parties"],
-    index=["auth", "register", "joinzyassistant", "search", "create", "myparties"].index(st.session_state.page)
+    ["Auth","Joinzy Assistant","Search", "Create", "My Parties"],
+    index=["auth", "joinzyassistant", "search", "create", "myparties"].index(st.session_state.page)
 )
 
 new_page = menu.lower().replace(" ", "")
@@ -26,7 +26,7 @@ if st.session_state.page != new_page:
 
 mapped = {
     "auth": auth_view,
-    "register": register_view,
+    # "register": register_view,
     "search": search_party_view,
     "create": create_party_view,
     "myparties": my_parties_view,
