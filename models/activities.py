@@ -9,8 +9,8 @@ class Activities(Base):
     activity_id = Column(String, primary_key=True, default=lambda: str(uuid.uuid4()))
     name = Column(String, nullable=False)
     description = Column(String)
-
-   locations = relationship("LocationActivities", back_populates="activity")
+    
+    locations = relationship("LocationActivities", back_populates="activity")
 
     def __init__(self, name: str, description: str):
         self.name = name
