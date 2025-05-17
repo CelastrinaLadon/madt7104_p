@@ -34,6 +34,9 @@ def create_party_view():
     with st.form("create_party_form"):
         party_name = st.text_input("ชื่อปาร์ตี้")
         
+          # ตรวจสอบและแสดงคำเตือน (ถ้าอยากแสดงเพิ่มก็ได้)
+        if party_name.strip() == "":
+            st.warning("ต้องมีชื่อปาร์ตี้")
         # Get activities and locations for dropdown
         activities = db.query(Activities).order_by(Activities.name).all()
         locations = db.query(Location).order_by(Location.name).all()
@@ -49,13 +52,23 @@ def create_party_view():
         col1, col2 = st.columns(2)
 
         with col1:
-            hour = st.selectbox("ชั่วโมง (Hour)", options=list(range(0, 24)))
+            hour = st.selectbox("เวลาเริ่ม  (Hour)", options=list(range(0, 24)))
 
         with col2:
             minute = st.selectbox("นาที (Minute)", options=[0, 15, 30, 45])
 
         time = dtTime(hour=hour, minute=minute)
-        
+        start_time = dtTime(hour=hour, minute=minute)
+
+        col1, col2 = st.columns(2)
+        with col1:
+            hour = st.selectbox("เวลาจบ  (Hour)", options=list(range(0, 24)))
+
+        with col2:
+            minute = st.selectbox("นาที (Minute)", options=[0, 15, 30, 45])
+
+        end_time = dtTime(hour=hour, minute=minute)
+
         # Player count - ensure it's more than 1
         player_count = st.number_input("จำนวนผู้เข้าร่วมสูงสุด", min_value=2, value=2, step=1)
 
@@ -75,7 +88,7 @@ def create_party_view():
                 # Combine date and time
                 import datetime
                 party_datetime = datetime.datetime.combine(party_date, time)
-                
+                party_endtime = datetime.datetime.combine(party_date, end_time)
                 # Create new party
                 new_party = Party(
                     party_name=party_name,
@@ -84,6 +97,7 @@ def create_party_view():
                     location_id=location_options[selected_location],
                     activity_id=activity_options[selected_activity],
                     party_time=party_datetime,
+                    party_endtime=party_endtime,
                     player=player_count,
                     min_player=min_participant,
                 )
