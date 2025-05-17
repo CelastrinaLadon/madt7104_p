@@ -52,22 +52,21 @@ def create_party_view():
         col1, col2 = st.columns(2)
 
         with col1:
-            hour = st.selectbox("เวลาเริ่ม  (Hour)", options=list(range(0, 24)))
+            start_hour = st.selectbox("เวลาเริ่ม  (Hour)", options=list(range(0, 24)))
 
         with col2:
-            minute = st.selectbox("นาที (Minute)", options=[0, 15, 30, 45])
+            start_minute = st.selectbox("นาที (Minute)", options=[0, 15, 30, 45])
 
-        time = dtTime(hour=hour, minute=minute)
-        start_time = dtTime(hour=hour, minute=minute)
+        start_time = dtTime(hour=start_hour, minute=start_minute)
 
-        col1, col2 = st.columns(2)
-        with col1:
-            hour = st.selectbox("เวลาจบ  (Hour)", options=list(range(0, 24)))
+        col3, col4 = st.columns(2)
+        with col3:
+            end_hour = st.selectbox("เวลาจบ  (Hour)", options=list(range(0, 24)))
 
-        with col2:
-            minute = st.selectbox("นาที (Minute)", options=[0, 15, 30, 45])
+        with col4:
+            end_minute = st.selectbox("นาที (Minute)", options=[0, 15, 30, 45])
 
-        end_time = dtTime(hour=hour, minute=minute)
+        end_time = dtTime(hour=end_hour, minute=end_minute)
 
         # Player count - ensure it's more than 1
         player_count = st.number_input("จำนวนผู้เข้าร่วมสูงสุด", min_value=2, value=2, step=1)
@@ -87,7 +86,7 @@ def create_party_view():
             try:
                 # Combine date and time
                 import datetime
-                party_datetime = datetime.datetime.combine(party_date, time)
+                party_datetime = datetime.datetime.combine(party_date, start_time)
                 party_endtime = datetime.datetime.combine(party_date, end_time)
                 # Create new party
                 new_party = Party(

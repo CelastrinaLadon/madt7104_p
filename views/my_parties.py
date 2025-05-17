@@ -46,7 +46,8 @@ def my_parties_view():
             "Party Name": p.party_name,
             "Activity Type": p.activity.name if p.activity else "-",
             "Date": p.party_time.strftime("%Y-%m-%d"),
-            "Time": p.party_time.strftime("%H:%M"),
+            "Start Time": p.party_time.strftime("%H:%M"),
+            "End Time": p.party_endtime.strftime("%H:%M"),
             "Location": p.location.name if p.location else "-",
             "Participant": f"{len(p.players)}/{p.player}",
             "party_id": p.party_id  # Store party_id to use with buttons later
