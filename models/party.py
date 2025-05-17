@@ -31,7 +31,8 @@ class Party(Base):
     is_start = Column(Boolean, default=False)
     is_summit = Column(Boolean, default=False)
 
-
+    min_player = Column(Integer, default=2)
+    
     host_user = relationship("User", backref="hosted_parties",lazy='joined')
     activity = relationship("Activities", backref="parties",lazy='joined')
     location = relationship("Location", backref="parties",lazy='joined')

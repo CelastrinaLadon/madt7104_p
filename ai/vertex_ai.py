@@ -55,9 +55,14 @@ def get_system_prompt():
     - “ฉันอยากจัดปาร์ตี้บอร์ดเกม”
     - “ช่วยหาปาร์ตี้ที่เชียงใหม่ให้หน่อย”
 
+    - หากผู้ใช้ต้องการดูรายละเอียดปาร์ตี้ ให้แนบลิงก์ HTML ที่เปิด `?view=<party_id>` เช่น: 🔍 <a href="?view=abc123" target="_self"><button>ดูปาร์ตี้: ปาร์ตี้หมากรุก</button></a>
+
+    - หากผู้ใช้ต้องการสร้างปาร์ตี้ ให้แนะนำให้ไปที่หน้า “สร้างปาร์ตี้” และแนบลิงก์ HTML: ➕ <a href="?page=create" target="_self"><button>สร้างปาร์ตี้ใหม่</button></a>
+
+    
     🎯 เป้าหมายของคุณ: ช่วยผู้ใช้ให้ได้คำตอบ หรือไปต่อยังขั้นตอนถัดไป เช่น ค้นหา / สร้างปาร์ตี้
 
-    ❗ ห้ามตอบคำถามที่อยู่นอกขอบเขตของระบบนี้ เช่น เรื่องส่วนตัว หรือความรู้ทั่วไป
+    **ห้ามตอบคำถามที่อยู่นอกขอบเขตของระบบนี้ เช่น เรื่องส่วนตัว หรือความรู้ทั่วไป**
     """
     return system_prompt
 
@@ -80,7 +85,7 @@ def send_to_gemini(session_id: str, user_message: str) -> str:
     else:
         chat = chat_session[session_id]
         # 💡 10% โอกาสในการอัปเดต system prompt
-        if random.random() < 0.1:
+        if random.random() < 0.8:
             system_prompt = get_system_prompt()
         else:
             system_prompt = ""  # ไม่ใส่ prompt ซ้ำ

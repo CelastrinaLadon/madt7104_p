@@ -45,10 +45,14 @@ def create_party_view():
         
         # Date and time picker
         party_date = st.date_input("วันที่")
-        party_time = st.time_input("เวลา")
+        hour = st.number_input("Hour", min_value=0, max_value=23, step=1, value=0)
+        minute = st.number_input("Minute", min_value=0, max_value=59, step=1, value=0)
+
+        time = datetime.time(hour=hour, minute=minute)
         
         # Player count - ensure it's more than 1
         player_count = st.number_input("จำนวนผู้เข้าร่วมสูงสุด", min_value=2, value=2, step=1)
+        min_participant = st.number_input("จำนวนผู้เข้าร่วมต่ำสุด", min_value=2, step=1)
         
         # Additional party details if needed
         description = st.text_area("รายละเอียดเพิ่มเติม", "")
@@ -59,7 +63,7 @@ def create_party_view():
             try:
                 # Combine date and time
                 import datetime
-                party_datetime = datetime.datetime.combine(party_date, party_time)
+                party_datetime = datetime.datetime.combine(party_date, time)
                 
                 # Create new party
                 new_party = Party(
@@ -69,7 +73,8 @@ def create_party_view():
                     location_id=location_options[selected_location],
                     activity_id=activity_options[selected_activity],
                     party_time=party_datetime,
-                    player=player_count
+                    player=player_count,
+                    min_player=min_participant,
                 )
                 
                 db.add(new_party)
