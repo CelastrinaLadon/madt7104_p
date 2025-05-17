@@ -46,15 +46,20 @@ def create_party_view():
         
         # Date and time picker
         party_date = st.date_input("วันที่")
-        hour = st.number_input("Hour", min_value=0, max_value=23, step=1, value=0)
-        minute = st.number_input("Minute", min_value=0, max_value=59, step=1, value=0)
+        hour = st.selectbox("ชั่วโมง (Hour)", options=list(range(0, 23)))
+        minute = st.selectbox("นาที (Minute)", options=[0, 15, 30, 45])
 
         time = dtTime(hour=hour, minute=minute)
         
         # Player count - ensure it's more than 1
         player_count = st.number_input("จำนวนผู้เข้าร่วมสูงสุด", min_value=2, value=2, step=1)
-        min_participant = st.number_input("จำนวนผู้เข้าร่วมต่ำสุด", min_value=2, step=1)
-        
+
+        # จำนวนผู้เข้าร่วมต่ำสุด (จำกัดไม่ให้มากกว่า player_count)
+        min_participant = st.number_input("จำนวนผู้เข้าร่วมต่ำสุด", min_value=2, max_value=player_count, value=2, step=1)
+
+        # ตรวจสอบและแสดงคำเตือน (ถ้าอยากแสดงเพิ่มก็ได้)
+        if min_participant > player_count:
+            st.warning("จำนวนผู้เข้าร่วมต่ำสุดต้องไม่มากกว่าจำนวนผู้เข้าร่วมสูงสุด")
         # Additional party details if needed
         description = st.text_area("รายละเอียดเพิ่มเติม", "")
         
