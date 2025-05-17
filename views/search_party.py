@@ -24,7 +24,7 @@ def search_party_view():
 
     query_params = st.query_params
     if "view" in query_params:
-        party_id = st.session_state.pop("selected_party_id")
+        party_id = query_params["view"][0]
         party_details_view(party_id)
         return
 
@@ -64,8 +64,6 @@ def search_party_view():
     df = pd.DataFrame(rows)
 
     
-
-
     selected_activity = st.selectbox("ประเภทกิจกรรม", ['All']+activity_names)
     selected_location = st.selectbox("สถานที่", ['All']+location_names)
 
