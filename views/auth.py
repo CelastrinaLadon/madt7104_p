@@ -5,10 +5,10 @@ from streamlit_cookies_manager import CookieManager
 
 from models.db import SessionLocal
 
-def auth_view():
-    from models.auth import User
+cookies = CookieManager()
 
-    cookies = CookieManager()
+def auth_view():
+    from models.auth import User 
     if not cookies.ready():
         st.stop()
 
