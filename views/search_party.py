@@ -10,6 +10,8 @@ import pandas as pd
 from utils.session import is_login
 
 def search_party_view():
+
+
     st.title("Joinzy - จอยซี่!")
     st.subheader("🔍 ค้นหาปาร์ตี้ที่คุณสนใจ")
 
@@ -18,14 +20,7 @@ def search_party_view():
         if st.button("เข้าสู่ระบบ"):
             st.session_state.page = "auth"
             st.rerun()
-        return
-
-    # Get query parameters from the URL
-    # query_params = st.experimental_get_query_params()
-    # if "view" in query_params:
-    #     party_id = query_params["view"][0]  # Extract the 'view' param
-    #     party_details_view(party_id)
-    #     return
+        return 
 
     query_params = st.query_params
     if "view" in query_params:
