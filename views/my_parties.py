@@ -40,8 +40,8 @@ def my_parties_view():
     location_names = [a.name for a in db.query(Location).order_by(Location.name).all()]
 
     price_obj = db.query(LocationActivities).filter_by(
-        location_id=p.location_id,
-        activity_id=p.activity_id
+        location_id=parties.location_id,
+        activity_id=parties.activity_id
     ).first()
 
     price = f"{price_obj.price:,} บาท" if price_obj else "-"
