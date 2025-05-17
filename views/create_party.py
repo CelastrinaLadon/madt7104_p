@@ -88,6 +88,10 @@ def create_party_view():
                 import datetime
                 party_datetime = datetime.datetime.combine(party_date, start_time)
                 party_endtime = datetime.datetime.combine(party_date, end_time)
+                if party_datetime >= party_endtime:
+                    st.warning("เวลาจบต้องมากกว่าเวลาเริ่ม")
+                    return
+                
                 # Create new party
                 new_party = Party(
                     party_name=party_name,
