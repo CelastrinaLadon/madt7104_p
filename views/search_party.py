@@ -23,8 +23,8 @@ def search_party_view():
         return 
 
     query_params = st.query_params
-    if "view" in query_params:
-        party_id = query_params["view"]  # Extract the 'view' param
+    if "selected_party_id" in st.session_state:
+        party_id = st.session_state.pop("selected_party_id")
         party_details_view(party_id)
         return
     # Create DB session
@@ -38,6 +38,13 @@ def search_party_view():
     # Transform to displayable DataFrame
     rows = []
     for p in parties:
+        price_obj = db.query(LocationActivities).filter_by(
+            location_id=p.location_id,
+            activity_id=p.activity_id
+        ).first()
+
+        price = f"{price_obj.price:,} บาท" if price_obj else "-"
+        
         rows.append({
             "Party Name": p.party_name,
             "Activity Type": p.activity.name if p.activity else "-",
@@ -45,10 +52,14 @@ def search_party_view():
             "Time": p.party_time.strftime("%H:%M"),
             "Location": p.location.name if p.location else "-",
             "Participant": f"{len(p.players)}/{p.player}",
-            "party_id": p.party_id  # Store party_id to use with buttons later
+            "party_id": p.party_id,
+            "price": price,
         })
 
     df = pd.DataFrame(rows)
+
+    
+
 
     selected_activity = st.selectbox("ประเภทกิจกรรม", ['All']+activity_names)
     selected_location = st.selectbox("สถานที่", ['All']+location_names)
@@ -70,15 +81,28 @@ def search_party_view():
         st.session_state.page = "create"
         st.rerun()
 
-    if not filtered_df.empty:
-        # Display the regular data without the party_id column
-        filtered_df["View Party"] = filtered_df.apply(
-            lambda row: f'<a href="?view={row["party_id"]}" target="_self"><button style="background-color: #4CAF50; color: white; padding: 10px; font-size: 16px; border: none; cursor: pointer;">🔍 ดูปาร์ตี้: {row["Party Name"]}</button></a>', axis=1
-        )
+    st.subheader("รายการปาร์ตี้")
+    for idx, row in filtered_df.iterrows():
+        with st.container():
+            st.markdown(f"### 🎉 {row['Party Name']}")
+            st.markdown(f"- กิจกรรม: {row['Activity Type']}")
+            st.markdown(f"- สถานที่: {row['Location']}")
+            st.markdown(f"- เวลา: {row['Date']} {row['Time']}")
+            st.markdown(f"- ผู้เข้าร่วม: {row['Participant']}")
+            st.markdown(f"- ราคา: {row['price']}")
+            if st.button(f"🔍 ดูปาร์ตี้: {row['Party Name']}", key=f"view_{row['party_id']}"):
+                st.session_state.selected_party_id = row["party_id"]
+                st.rerun()
 
-        display_df = filtered_df[["Party Name", "Activity Type", "Date", "Time", "Location", "Participant","View Party"]]
-        # Display the filtered DataFrame with the "View Party" column
-        st.write(display_df.to_html(escape=False, index=False), unsafe_allow_html=True)
+    # if not filtered_df.empty:
+    #     # Display the regular data without the party_id column
+    #     filtered_df["View Party"] = filtered_df.apply(
+    #         lambda row: f'<a href="?view={row["party_id"]}" target="_self"><button style="background-color: #4CAF50; color: white; padding: 10px; font-size: 16px; border: none; cursor: pointer;">🔍 ดูปาร์ตี้: {row["Party Name"]}</button></a>', axis=1
+    #     )
+
+    #     display_df = filtered_df[["Party Name", "Activity Type", "Date", "Time", "Location", "Participant","View Party"]]
+    #     # Display the filtered DataFrame with the "View Party" column
+    #     st.write(display_df.to_html(escape=False, index=False), unsafe_allow_html=True)
         
         # # Create a grid of buttons for party details
         # st.subheader("ดูรายละเอียดปาร์ตี้")
