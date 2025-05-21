@@ -87,7 +87,7 @@ def my_parties_view():
     if not filtered_df.empty:
         # Add a "View" button with href to each row
         filtered_df["View Party"] = filtered_df.apply(
-            lambda row: f'<a href="?page="myparties"&view={row["party_id"]}" target="_self"><button style="background-color: #4CAF50; color: white; padding: 10px; font-size: 16px; border: none; cursor: pointer;">🔍 ดูปาร์ตี้: {row["Party Name"]}</button></a>', axis=1
+            lambda row: f'<a href="?page=myparties&view={row["party_id"]}" target="_self"><button style="background-color: #4CAF50; color: white; padding: 10px; font-size: 16px; border: none; cursor: pointer;">🔍 ดูปาร์ตี้: {row["Party Name"]}</button></a>', axis=1
         )
 
         # Display the filtered DataFrame with the "View Party" column

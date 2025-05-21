@@ -23,9 +23,8 @@ def search_party_view():
         return 
 
     query_params = st.query_params
-    if "view" in query_params:
-        print("query_params", query_params)
-        party_id = query_params["view"][0]
+    if "view" in query_params:        
+        party_id = query_params["view"]
         party_details_view(party_id)
         return
 
@@ -86,7 +85,7 @@ def search_party_view():
     if not filtered_df.empty:
         # Display the regular data without the party_id column
         filtered_df["View Party"] = filtered_df.apply(
-            lambda row: f'<a href="?page="search"&view={row["party_id"]}" target="_self"><button style="background-color: #4CAF50; color: white; padding: 10px; font-size: 16px; border: none; cursor: pointer;">🔍 ดูปาร์ตี้: {row["Party Name"]}</button></a>', axis=1
+            lambda row: f'<a href="?page=search&view={row["party_id"]}" target="_self"><button style="background-color: #4CAF50; color: white; padding: 10px; font-size: 16px; border: none; cursor: pointer;">🔍 ดูปาร์ตี้: {row["Party Name"]}</button></a>', axis=1
         )
 
         display_df = filtered_df[["Party Name", "Activity Type", "Date", "Time", "Location", "Participant","price", "View Party"]]
