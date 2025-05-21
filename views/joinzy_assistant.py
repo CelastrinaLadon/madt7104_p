@@ -70,5 +70,6 @@ def joinzy_assistant_view():
 
     # Manual back button
     if st.button("⬅️ กลับ"):
+        st.query_params.clear()  
         st.query_params["page"]= "search"
         st.rerun()

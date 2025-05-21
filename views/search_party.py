@@ -195,8 +195,7 @@ def party_details_view(party_id):
     #     st.query_params["page"]= "search"
     #     st.rerun()
     if st.button("⬅️ กลับ"):
-    # redirect ไปหน้า search โดยลบ query param
-        st.query_params["page"]= 'search'
-        st.markdown("""<script>window.location.href = window.location.pathname + "?page=search";</script>""", unsafe_allow_html=True)
+        st.query_params.clear()  
+        st.query_params["page"]= "search"
         st.stop()
     db.close()
