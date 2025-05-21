@@ -18,7 +18,7 @@ def search_party_view():
     if not st.session_state.get("logged_in", False) or not st.session_state.get("username"):
         st.error("กรุณาเข้าสู่ระบบก่อนค้นหา")
         if st.button("เข้าสู่ระบบ"):
-            st.session_state.page = "auth"
+            st.query_params["page"]= "auth"
             st.rerun()
         return 
 
@@ -80,7 +80,7 @@ def search_party_view():
             filtered_df = filtered_df[filtered_df["Party Name"].str.contains(search_text, case=False)]
 
     if st.button("➕ สร้างปาร์ตี้ใหม่"):
-        st.session_state.page = "create"
+        st.query_params["page"]= "create"
         st.rerun()
 
     if not filtered_df.empty:
@@ -113,7 +113,7 @@ def party_details_view(party_id):
     if not party:
         st.error("ไม่พบข้อมูลปาร์ตี้")
         if st.button("กลับ"):
-            st.session_state.page = "search"
+            st.query_params["page"]= "search"
             st.rerun()
         db.close()
         return
@@ -188,16 +188,16 @@ def party_details_view(party_id):
         else:
             st.info("กรุณาเข้าสู่ระบบเพื่อเข้าร่วมปาร์ตี้")
             if st.button("เข้าสู่ระบบ"):
-                st.session_state.page = "auth"
+                st.query_params["page"]= "auth"
                 st.rerun()
     
     # Back button
     # if st.button("กลับ"):
-    #     st.session_state.page = "search"
+    #     st.query_params["page"]= "search"
     #     st.rerun()
     if st.button("⬅️ กลับ"):
     # redirect ไปหน้า search โดยลบ query param
-        st.session_state.page = 'search'
+        st.query_params["page"]= 'search'
         st.markdown("""<script>window.location.href = window.location.pathname + "?page=search";</script>""", unsafe_allow_html=True)
-        # st.stop()
+        st.stop()
     db.close()

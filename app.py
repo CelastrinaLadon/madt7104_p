@@ -9,27 +9,33 @@ from views.joinzy_assistant import joinzy_assistant_view
 
 def not_implement():
     return Exception("Not implement")
-
-if "page" not in st.session_state:
-    st.session_state.page = "auth"
-
 # Sidebar navigation
+query_params = st.query_params
+current_page = query_params.get("page", "auth")
+
+
+# Sidebar menu with radio button
 menu = st.sidebar.radio(
     "Select a Page",
-    ["Auth","Joinzy Assistant","Search", "Create", "My Parties"],
-    index=["auth", "joinzyassistant", "search", "create", "myparties"].index(st.session_state.page)
+    ["Auth", "Joinzy Assistant", "Search", "Create", "My Parties"],
+    index=["auth", "joinzyassistant", "search", "create", "myparties"].index(current_page)
 )
 
+# Convert selected label to page key
 new_page = menu.lower().replace(" ", "")
-if st.session_state.page != new_page:
-    st.session_state.page = new_page
 
+# If selection changed, update the URL param
+if current_page != new_page:
+    print(new_page)
+    st.query_params["page"] = new_page
+
+
+# Routing to the selected view
 mapped = {
     "auth": auth_view,
-    # "register": register_view,
     "search": search_party_view,
     "create": create_party_view,
     "myparties": my_parties_view,
     "joinzyassistant": joinzy_assistant_view
 }
-mapped.get(st.session_state.page, not_implement)()
+mapped.get(new_page, not_implement)()

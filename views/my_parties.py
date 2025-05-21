@@ -15,7 +15,7 @@ def my_parties_view():
     if not st.session_state.get("logged_in", False) or not st.session_state.get("username"):
         st.error("กรุณาเข้าสู่ระบบก่อนค้นหา")
         if st.button("เข้าสู่ระบบ"):
-            st.session_state.page = "auth"
+            st.query_params["page"]= "auth"
             st.rerun()
         return
     # Create DB session
@@ -39,16 +39,17 @@ def my_parties_view():
     activity_names = [a.name for a in db.query(Activities).order_by(Activities.name).all()]
     location_names = [a.name for a in db.query(Location).order_by(Location.name).all()]
 
-    price_obj = db.query(LocationActivities).filter_by(
-        location_id=parties.location_id,
-        activity_id=parties.activity_id
-    ).first()
 
-    price = f"{price_obj.price:,} บาท" if price_obj else "-"
+
 
     # Transform to displayable DataFrame
     rows = []
-    for p in parties:
+    for p in parties:    
+        price_obj = db.query(LocationActivities).filter_by(
+            location_id=parties.location_id,
+            activity_id=parties.activity_id
+        ).first()
+        price = f"{price_obj.price:,} บาท" if price_obj else "-"
         rows.append({
             "Party Name": p.party_name,
             "Activity Type": p.activity.name if p.activity else "-",
@@ -80,7 +81,7 @@ def my_parties_view():
             filtered_df = filtered_df[filtered_df["Party Name"].str.contains(search_text, case=False)]
 
     if st.button("➕ สร้างปาร์ตี้ใหม่"):
-        st.session_state.page = "create"
+        st.query_params["page"]= "create"
         st.rerun()
 
     if not filtered_df.empty:

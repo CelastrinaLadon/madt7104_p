@@ -18,7 +18,7 @@ def joinzy_assistant_view():
     if not st.session_state.get("logged_in", False) or not st.session_state.get("username"):
         st.error("กรุณาเข้าสู่ระบบก่อนใช้แอสซิสแทนท์")
         if st.button("เข้าสู่ระบบ"):
-            st.session_state.page = "auth"
+            st.query_params["page"]= "auth"
             st.rerun()
         return
 
@@ -61,14 +61,14 @@ def joinzy_assistant_view():
         # Action buttons
         if intent == "create":
             if st.button("➡️ ไปหน้าสร้างปาร์ตี้"):
-                st.session_state.page = "create"
+                st.query_params["page"]= "create"
                 st.rerun()
         elif intent == "search":
             if st.button("🔍 ค้นหาปาร์ตี้"):
-                st.session_state.page = "search_party"
+                st.query_params["page"]= "search"
                 st.rerun()
 
     # Manual back button
     if st.button("⬅️ กลับ"):
-        st.session_state.page = "search_party"
+        st.query_params["page"]= "search"
         st.rerun()

@@ -16,7 +16,7 @@ def register_view():
     if st.session_state.get("logged_in", False) or st.session_state.get("username"):
         st.error("กรุณาออกจากระบบ")
         if st.button("ออกจากระบบ"):
-            st.session_state.page = "auth"
+            st.query_params["page"]= "auth"
             st.rerun()
         return
     
@@ -28,7 +28,7 @@ def register_view():
     if st.session_state.register_success:
         st.success("✅ Registration successful!")
         if st.button("Go to Login Page"):
-            st.session_state.page = "auth"
+            st.query_params["page"]= "auth"
             st.rerun()
         return
 

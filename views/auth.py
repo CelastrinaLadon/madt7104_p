@@ -24,7 +24,7 @@ def auth_view():
     if not st.session_state.logged_in and cookies.get("username"):
         st.session_state.logged_in = True
         st.session_state.username = cookies["username"]
-        st.session_state.page = "search"
+        st.query_params["page"] = "search"
         st.rerun()
 
     if st.session_state.logged_in:
@@ -33,7 +33,7 @@ def auth_view():
             cookies["username"] = None
             cookies.save()
             st.session_state.clear()
-            st.session_state.page = "auth"
+            st.query_params["page"] = "auth"
             st.rerun()
         return
 
@@ -55,7 +55,7 @@ def auth_view():
                     cookies.save()
                     st.session_state.logged_in = True
                     st.session_state.username = username
-                    st.session_state.page = "search"
+                    st.query_params["page"]= "search"
                     st.success("เข้าสู่ระบบสำเร็จ")
                     st.rerun()
                 else:
@@ -87,7 +87,7 @@ def auth_view():
                         cookies.save()
                         st.session_state.logged_in = True
                         st.session_state.username = username
-                        st.session_state.page = "joinzyassistant"
+                        st.query_params["page"]= "joinzyassistant"
                         st.success("สมัครสมาชิกสำเร็จ 🎉")
                         st.rerun()
                     db.close()

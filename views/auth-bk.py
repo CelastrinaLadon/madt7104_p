@@ -27,7 +27,7 @@ def login(username):
     # Set session state
     st.session_state.logged_in = True
     st.session_state.username = username
-    st.session_state.page = "search"
+    st.query_params["page"]= "search"
     st.session_state.messages = []
     
     st.rerun()
@@ -40,7 +40,7 @@ def logout():
     st.session_state.clear()  # Optional: clears all keys
     st.session_state.logged_in = False
     st.session_state.username = None
-    st.session_state.page = "auth"
+    st.query_params["page"]= "auth"
     st.session_state.messages = []
 
     st.rerun()
@@ -58,7 +58,7 @@ def auth_view():
     if not st.session_state.logged_in and cookies.get("username"):
         st.session_state.logged_in = True
         st.session_state.username = cookies["username"]
-        st.session_state.page = "search"
+        st.query_params["page"]= "search"
         st.success(f"Welcome back, {cookies['username']}!")
         st.rerun()
 
@@ -83,5 +83,5 @@ def auth_view():
             st.error("Invalid username or password.")
 
     if st.button("Register Instead"):
-        st.session_state.page = "register"
+        st.query_params["page"]= "register"
         st.rerun()

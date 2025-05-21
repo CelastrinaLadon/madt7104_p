@@ -16,7 +16,7 @@ def create_party_view():
     if not st.session_state.get("logged_in", False) or not st.session_state.get("username"):
         st.error("กรุณาเข้าสู่ระบบก่อนสร้างปาร์ตี้")
         if st.button("เข้าสู่ระบบ"):
-            st.session_state.page = "auth"
+            st.query_params["page"]= "auth"
             st.rerun()
         return
     
@@ -117,7 +117,7 @@ def create_party_view():
                 # Redirect to search page after short delay
                 import time
                 time.sleep(1)
-                st.session_state.page = "search"
+                st.query_params["page"]= "search"
                 st.rerun()
                 
             except Exception as e:
@@ -125,7 +125,7 @@ def create_party_view():
                 st.error(f"เกิดข้อผิดพลาด: {str(e)}")
     
     if st.button("กลับ"):
-        st.session_state.page = "search"
+        st.query_params["page"]= "search"
         st.rerun()
     
     db.close()
