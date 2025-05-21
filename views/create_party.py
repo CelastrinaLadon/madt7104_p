@@ -51,20 +51,23 @@ def create_party_view():
         party_date = st.date_input("วันที่")
         col1, col2 = st.columns(2)
 
+        
+        st.markdown("## เวลาเริ่ม")
         with col1:
-            start_hour = st.selectbox("เวลาเริ่ม  (Hour)", options=list(range(0, 24)))
+            start_hour = st.selectbox("เวลาเริ่ม  (Hour)", options=list(range(0, 24)), label_visibility='hidden')
 
         with col2:
-            start_minute = st.selectbox("นาทีเริ่ม (Minute)", options=[0, 15, 30, 45])
+            start_minute = st.selectbox("นาทีเริ่ม (Minute)", options=[0, 15, 30, 45], label_visibility='hidden')
 
         start_time = dtTime(hour=start_hour, minute=start_minute)
 
+        st.markdown("## เวลาจบ")
         col3, col4 = st.columns(2)
         with col3:
-            end_hour = st.selectbox("เวลาจบ  (Hour)", options=list(range(0, 24)))
+            end_hour = st.selectbox("เวลาจบ  (Hour)", options=list(range(0, 24)), label_visibility='hidden')
 
         with col4:
-            end_minute = st.selectbox("นาทีจบ (Minute)", options=[0, 15, 30, 45])
+            end_minute = st.selectbox("นาทีจบ (Minute)", options=[0, 15, 30, 45], label_visibility='hidden')
 
         end_time = dtTime(hour=end_hour, minute=end_minute)
 

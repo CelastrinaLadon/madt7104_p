@@ -187,7 +187,7 @@ def party_details_view(party_id):
         else:
             st.info("กรุณาเข้าสู่ระบบเพื่อเข้าร่วมปาร์ตี้")
             if st.button("เข้าสู่ระบบ"):
-                st.query_params["page"]= "auth"
+                st.query_params["page"] = "auth"
                 st.rerun()
     
     # Back button
