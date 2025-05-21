@@ -46,8 +46,8 @@ def my_parties_view():
     rows = []
     for p in parties:    
         price_obj = db.query(LocationActivities).filter_by(
-            location_id=parties.location_id,
-            activity_id=parties.activity_id
+            location_id=p.location_id,
+            activity_id=p.activity_id
         ).first()
         price = f"{price_obj.price:,} บาท" if price_obj else "-"
         rows.append({
