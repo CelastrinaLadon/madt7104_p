@@ -4,14 +4,15 @@ import bcrypt
 from streamlit_cookies_manager import CookieManager
 
 from models.db import SessionLocal
+# from utils.cookie import get_cookie_manager
 
-def auth_view():
+# cookies = get_cookie_manager()
+# if not cookies.ready():
+#     st.stop()
+
+def auth_view(cookies):
     from models.auth import User 
 
-    
-    cookies = CookieManager()
-    if not cookies.ready():
-        st.stop()
 
     username = cookies.get("username")
     logged_in = username is not None

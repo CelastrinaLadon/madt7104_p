@@ -8,11 +8,11 @@ from models.auth import User
 import pandas as pd
 from streamlit_cookies_manager import CookieManager
 
-cookies = CookieManager()
-if not cookies.ready():
-    st.stop()
+from utils.cookie import get_cookie_manager
 
-def search_party_view():
+# cookies = get_cookie_manager()
+
+def search_party_view(cookies):
     username = cookies.get("username")
     logged_in = username is not None
 
@@ -29,7 +29,7 @@ def search_party_view():
     query_params = st.query_params
     if "view" in query_params:        
         party_id = query_params["view"]
-        party_details_view(party_id)
+        party_details_view(party_id, cookies)
         return
 
 
@@ -101,7 +101,7 @@ def search_party_view():
 
     db.close()
 
-def party_details_view(party_id):
+def party_details_view(party_id, cookies):
 
     username = cookies.get("username")
     logged_in = username is not None

@@ -9,11 +9,14 @@ from models.auth import User
 from streamlit_cookies_manager import CookieManager
 
 
+# from utils.cookie import get_cookie_manager
 
-def my_parties_view():
-    cookies = CookieManager()
-    if not cookies.ready():
-        st.stop()
+# cookies = get_cookie_manager()
+
+def my_parties_view(cookies):
+    # cookies = CookieManager()
+    # if not cookies.ready():
+    #     st.stop()
     username = cookies.get("username")
     logged_in = username is not None
 

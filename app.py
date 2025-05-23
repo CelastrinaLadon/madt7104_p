@@ -6,6 +6,9 @@ from views.create_party import create_party_view
 from views.my_parties import my_parties_view
 from views.register import register_view
 from views.joinzy_assistant import joinzy_assistant_view
+from streamlit_cookies_manager import CookieManager
+
+
 
 def not_implement():
     return Exception("Not implement")
@@ -14,6 +17,11 @@ query_params = st.query_params
 current_page = query_params.get("page", "auth")
 
 st.sidebar.image("statics/Joinzy_White.png",width=250)
+
+cookies = CookieManager()
+if not cookies.ready():
+    st.stop()
+
 
 # Sidebar menu with radio button
 menu = st.sidebar.radio(
@@ -39,4 +47,4 @@ mapped = {
     "myparties": my_parties_view,
     "joinzyassistant": joinzy_assistant_view
 }
-mapped.get(new_page, not_implement)()
+mapped.get(new_page, not_implement)(cookies)

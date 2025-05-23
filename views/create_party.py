@@ -9,11 +9,13 @@ from models.activities import Activities
 from models.location import Location
 from streamlit_cookies_manager import CookieManager
 
+from utils.cookie import get_cookie_manager
 
-def create_party_view():
-    cookies = CookieManager()
-    if not cookies.ready():
-        st.stop()
+# cookies = get_cookie_manager()
+
+def create_party_view(cookies):
+    # if not cookies.ready():
+    #     st.stop()
 
     username = cookies.get("username")
     logged_in = username is not None
