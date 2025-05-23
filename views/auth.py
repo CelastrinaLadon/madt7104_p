@@ -24,7 +24,7 @@ def auth_view():
     if not st.session_state.logged_in and cookies.get("username"):
         st.session_state.logged_in = True
         st.session_state.username = cookies["username"]
-        st.query_params["page"] = "search"
+        st.query_params["page"] = "joinzyassistant"
         st.rerun()
 
     if st.session_state.logged_in:

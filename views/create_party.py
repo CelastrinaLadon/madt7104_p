@@ -49,9 +49,7 @@ def create_party_view():
         
         # Date and time picker
         party_date = st.date_input("วันที่")
-       
 
-        
         st.markdown("## เวลาเริ่ม")
         col1, col2 = st.columns(2)
         with col1:

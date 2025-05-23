@@ -15,6 +15,14 @@ class Location(Base):
     lat = Column(String)
     long = Column(String)
 
+    def to_dict(self):
+        return {
+            "location_id": self.location_id,
+            "name": self.name,
+            "address": self.address,
+            "lat": self.lat,
+            "long": self.long,
+        }
 class LocationActivities(Base):
     __tablename__ = "location_activities"
 

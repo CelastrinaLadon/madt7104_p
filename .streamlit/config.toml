@@ -1,5 +1,5 @@
 [theme]
-primaryColor = "#FFE6CC"          # Orange (matches Joinzy branding)
+primaryColor = "#fb8500"          # Orange (matches Joinzy branding)
 backgroundColor = "#FFFFFF"       # White background
 secondaryBackgroundColor = "#fb8500"  # Light orange for card contrast
 textColor = "#000000"             # Black text

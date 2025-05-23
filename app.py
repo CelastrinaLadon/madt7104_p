@@ -26,7 +26,7 @@ new_page = menu.lower().replace(" ", "")
 
 # If selection changed, update the URL param
 if current_page != new_page:
-    print(new_page)
+    st.query_params.clear()
     st.query_params["page"] = new_page
 
 

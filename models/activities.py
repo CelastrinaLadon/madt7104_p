@@ -15,3 +15,10 @@ class Activities(Base):
     def __init__(self, name: str, description: str):
         self.name = name
         self.description = description
+        
+    def to_dict(self):
+        return {
+            "activity_id": self.activity_id,
+            "name": self.name,
+            "description": self.description
+        }
