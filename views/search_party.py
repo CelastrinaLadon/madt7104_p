@@ -6,16 +6,20 @@ from models.activities import Activities
 from models.location import Location, LocationActivities
 from models.auth import User
 import pandas as pd
+from streamlit_cookies_manager import CookieManager
 
-from utils.session import is_login
+cookies = CookieManager()
+if not cookies.ready():
+    st.stop()
 
 def search_party_view():
-
+    username = cookies.get("username")
+    logged_in = username is not None
 
     st.title("Joinzy - จอยซี่!")
     st.subheader("🔍 ค้นหาปาร์ตี้ที่คุณสนใจ")
 
-    if not st.session_state.get("logged_in", False) or not st.session_state.get("username"):
+    if not logged_in:
         st.error("กรุณาเข้าสู่ระบบก่อนค้นหา")
         if st.button("เข้าสู่ระบบ"):
             st.query_params["page"]= "auth"
@@ -98,6 +102,10 @@ def search_party_view():
     db.close()
 
 def party_details_view(party_id):
+
+    username = cookies.get("username")
+    logged_in = username is not None
+
     # Create DB session
     db = SessionLocal()
     
@@ -140,8 +148,8 @@ def party_details_view(party_id):
         
         # Check if current user is logged in
         current_user = None
-        if st.session_state.get("logged_in") and st.session_state.get("username"):
-            current_user = db.query(User).filter(User.username == st.session_state.username).first()
+        if logged_in:
+            current_user = db.query(User).filter(User.username == username).first()
         
         # Determine if user is host or participant
         is_host = current_user and current_user.user_id == party.host

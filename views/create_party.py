@@ -7,13 +7,22 @@ from models.auth import User
 from models.party import Party
 from models.activities import Activities
 from models.location import Location
+from streamlit_cookies_manager import CookieManager
+
 
 def create_party_view():
+    cookies = CookieManager()
+    if not cookies.ready():
+        st.stop()
+
+    username = cookies.get("username")
+    logged_in = username is not None
+
     st.title("Joinzy - จอยซี่!")
     st.subheader("➕ สร้างปาร์ตี้ใหม่")
 
     # Check if user is logged in
-    if not st.session_state.get("logged_in", False) or not st.session_state.get("username"):
+    if not logged_in or not username:
         st.error("กรุณาเข้าสู่ระบบก่อนสร้างปาร์ตี้")
         if st.button("เข้าสู่ระบบ"):
             st.query_params["page"]= "auth"
@@ -24,7 +33,7 @@ def create_party_view():
     db = SessionLocal()
     
     # Get current user using username from session
-    current_user = db.query(User).filter(User.username == st.session_state.username).first()
+    current_user = db.query(User).filter(User.username == username).first()
     if not current_user:
         st.error("ไม่พบข้อมูลผู้ใช้")
         db.close()

@@ -6,13 +6,22 @@ from models.party import Party
 from models.activities import Activities
 from models.location import Location, LocationActivities
 from models.auth import User
+from streamlit_cookies_manager import CookieManager
+
+cookies = CookieManager()
+if not cookies.ready():
+    st.stop()
 
 def my_parties_view():
+    username = cookies.get("username")
+    logged_in = username is not None
+
+
     st.title("My Parties - ปาร์ตี้ของฉัน")
     st.subheader("🔍 ค้นหาปาร์ตี้ที่คุณจัดหรือเข้าร่วม")
 
     # Ensure the user is logged in
-    if not st.session_state.get("logged_in", False) or not st.session_state.get("username"):
+    if not logged_in:
         st.error("กรุณาเข้าสู่ระบบก่อนค้นหา")
         if st.button("เข้าสู่ระบบ"):
             st.query_params["page"]= "auth"
@@ -21,7 +30,7 @@ def my_parties_view():
     # Create DB session
     db = SessionLocal()
     # Get current logged-in user
-    current_user = db.query(User).filter(User.username == st.session_state.username).first()
+    current_user = db.query(User).filter(User.username == username).first()
 
     if not current_user:
         st.error("ไม่พบข้อมูลผู้ใช้นี้ในระบบ")

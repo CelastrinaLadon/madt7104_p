@@ -5,34 +5,27 @@ from streamlit_cookies_manager import CookieManager
 
 from models.db import SessionLocal
 
-cookies = CookieManager()
-if not cookies.ready():
-    st.stop()
-
 def auth_view():
     from models.auth import User 
 
-    # Init session
-    if "logged_in" not in st.session_state:
-        st.session_state.logged_in = False
-    if "username" not in st.session_state:
-        st.session_state.username = None
+    cookies = CookieManager()
+    if not cookies.ready():
+        st.stop()
 
-    st.title("👤 เข้าสู่ระบบ / สมัครสมาชิก")
+    username = cookies.get("username")
+    logged_in = username is not None
 
     # Auto-login via cookies
-    if not st.session_state.logged_in and cookies.get("username"):
-        st.session_state.logged_in = True
-        st.session_state.username = cookies["username"]
-        st.query_params["page"] = "joinzyassistant"
-        st.rerun()
+    # if not logged_in:
+    #     # st.query_params["page"] = "joinzyassistant"
+    #     st.rerun()
 
-    if st.session_state.logged_in:
-        st.success(f"คุณเข้าสู่ระบบแล้วในชื่อ {st.session_state.username}")
+    if logged_in:
+        st.success(f"คุณเข้าสู่ระบบแล้วในชื่อ {username}")
         if st.button("Logout"):
             cookies["username"] = None
             cookies.save()
-            st.session_state.clear()
+            st.query_params.clear()
             st.query_params["page"] = "auth"
             st.rerun()
         return
@@ -53,8 +46,6 @@ def auth_view():
                 if user and bcrypt.checkpw(password.encode(), user.password_hash.encode()):
                     cookies["username"] = username
                     cookies.save()
-                    st.session_state.logged_in = True
-                    st.session_state.username = username
                     st.query_params["page"]= "search"
                     st.success("เข้าสู่ระบบสำเร็จ")
                     st.rerun()
@@ -85,8 +76,6 @@ def auth_view():
                         db.commit()
                         cookies["username"] = username
                         cookies.save()
-                        st.session_state.logged_in = True
-                        st.session_state.username = username
                         st.query_params["page"]= "joinzyassistant"
                         st.success("สมัครสมาชิกสำเร็จ 🎉")
                         st.rerun()

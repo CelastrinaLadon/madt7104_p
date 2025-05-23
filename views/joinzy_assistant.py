@@ -1,40 +1,52 @@
 # ai_view.py
 import streamlit as st
 from ai.vertex_ai import send_to_gemini
+from streamlit_cookies_manager import CookieManager
+
 
 def joinzy_assistant_view():
+    cookies = CookieManager()
+    if not cookies.ready():
+        st.stop()
+
+    username = cookies.get("username")
+    logged_in = username is not None
+
     st.title("Joinzy Assistant 🤖")
     st.subheader("💬 คุยกับจอยซี่เพื่อค้นหาหรือสร้างปาร์ตี้")
 
-    if not st.session_state.get("logged_in", False) or not st.session_state.get("username"):
+    if not logged_in:
         st.error("กรุณาเข้าสู่ระบบก่อนใช้แอสซิสแทนท์")
         if st.button("เข้าสู่ระบบ"):
-            st.query_params["page"]= "auth"
-            st.rerun()
+            st.query_params["page"] = "auth"
         return
 
-    if "messages" not in st.session_state:
-        st.session_state.messages = []
+    messages = cookies.get("messages",[])
+    if not messages:
+        cookies.get("messages",[])
+        cookies.save()
 
-    for msg in st.session_state.messages:
+    for msg in cookies.get("messages",[]):
         with st.chat_message(msg["role"].lower()):
-            st.markdown(msg["content"])
+            st.markdown(msg["content"], unsafe_allow_html=True)
 
     user_input = st.chat_input("คุณต้องการค้นหาหรือสร้างปาร์ตี้อะไร?")
 
     if user_input:
-        st.session_state.messages.append({"role": "User", "content": user_input})
+        cookies["messages"].append({"role": "User", "content": user_input})
+        cookies.save()
         with st.chat_message("user"):
-            st.markdown(user_input)
+            st.markdown(user_input, unsafe_allow_html=True)
 
-        session_id = st.session_state["username"]
+        session_id = username
         assistant_response = send_to_gemini(session_id, user_input)
 
-        st.session_state.messages.append({"role": "Assistant", "content": assistant_response})
+        cookies["messages"].append({"role": "Assistant", "content": assistant_response})
+        cookies.save()
         with st.chat_message("assistant"):
             st.markdown(assistant_response, unsafe_allow_html=True)
 
     if st.button("⬅️ กลับ"):
         st.query_params.clear()
-        st.query_params["page"]= "search"
+        st.query_params["page"] = "search"
         st.rerun()
