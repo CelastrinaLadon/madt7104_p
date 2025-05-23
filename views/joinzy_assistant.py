@@ -23,10 +23,9 @@ def joinzy_assistant_view():
 
     messages = cookies.get("messages",[])
     if not messages:
-        cookies.get("messages",[])
-        cookies.save()
+        cookies["messages"] = []
 
-    for msg in cookies.get("messages",[]):
+    for msg in messages:
         with st.chat_message(msg["role"].lower()):
             st.markdown(msg["content"], unsafe_allow_html=True)
 
@@ -34,7 +33,6 @@ def joinzy_assistant_view():
 
     if user_input:
         cookies["messages"].append({"role": "User", "content": user_input})
-        cookies.save()
         with st.chat_message("user"):
             st.markdown(user_input, unsafe_allow_html=True)
 
@@ -42,9 +40,11 @@ def joinzy_assistant_view():
         assistant_response = send_to_gemini(session_id, user_input)
 
         cookies["messages"].append({"role": "Assistant", "content": assistant_response})
-        cookies.save()
+        
         with st.chat_message("assistant"):
             st.markdown(assistant_response, unsafe_allow_html=True)
+            
+    cookies.save()
 
     if st.button("⬅️ กลับ"):
         st.query_params.clear()

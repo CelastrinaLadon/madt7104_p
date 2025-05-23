@@ -8,6 +8,7 @@ from models.db import SessionLocal
 def auth_view():
     from models.auth import User 
 
+    
     cookies = CookieManager()
     if not cookies.ready():
         st.stop()

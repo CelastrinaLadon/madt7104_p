@@ -13,6 +13,7 @@ def not_implement():
 query_params = st.query_params
 current_page = query_params.get("page", "auth")
 
+st.sidebar.image("statics/Joinzy_White.png",width=250)
 
 # Sidebar menu with radio button
 menu = st.sidebar.radio(

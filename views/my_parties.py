@@ -8,11 +8,12 @@ from models.location import Location, LocationActivities
 from models.auth import User
 from streamlit_cookies_manager import CookieManager
 
-cookies = CookieManager()
-if not cookies.ready():
-    st.stop()
+
 
 def my_parties_view():
+    cookies = CookieManager()
+    if not cookies.ready():
+        st.stop()
     username = cookies.get("username")
     logged_in = username is not None
 
@@ -47,8 +48,6 @@ def my_parties_view():
     # Prepare a list of activities and locations
     activity_names = [a.name for a in db.query(Activities).order_by(Activities.name).all()]
     location_names = [a.name for a in db.query(Location).order_by(Location.name).all()]
-
-
 
 
     # Transform to displayable DataFrame
