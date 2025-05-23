@@ -4,7 +4,7 @@ import hashlib
 
 # @st.cache_resource
 def get_cookie_manager():
-    cm = CookieManager()
-    if not cm.ready():
-        st.stop()
+    # cm = CookieManager()
+    # if not cm.ready():
+    #     st.stop()
     return cm
