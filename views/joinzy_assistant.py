@@ -35,5 +35,7 @@ def joinzy_assistant_view():
             st.markdown(assistant_response, unsafe_allow_html=True)
 
     if st.button("⬅️ กลับ"):
-        st.experimental_set_query_params(page="search")
+        st.query_params.clear()
+        st.query_params["page"]= "search"
+        # st.experimental_set_query_params(page="search")
         st.rerun()
